@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { CalendarDays, Crown, Menu, X, ShoppingBag, Ticket, Users, Phone, ShieldCheck, LogOut } from "lucide-react";
+import { CalendarDays, Menu, X, ShoppingBag, Ticket, Users, Phone, ShieldCheck, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
@@ -41,10 +42,20 @@ export function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <Crown className="h-8 w-8 text-accent" />
-              <span className="text-xl font-bold tracking-tighter text-foreground sm:inline-block">
-                TEMA <span className="text-accent">ROYALS</span>
+            <Link href="/" className="flex items-center gap-3">
+              <Image
+                src="/temaroyalslogo.jpg"
+                alt="Tema Royals Sporting Club logo"
+                width={44}
+                height={44}
+                className="h-11 w-11 rounded-full bg-white object-contain p-0.5 ring-1 ring-primary/20"
+                priority
+              />
+              <span className="hidden text-lg font-black leading-none tracking-tight text-foreground sm:inline-block">
+                TEMA <span className="text-primary">ROYALS</span>
+                <span className="mt-0.5 block text-[10px] font-bold tracking-[0.2em] text-muted-foreground">
+                  SPORTING CLUB
+                </span>
               </span>
             </Link>
           </div>

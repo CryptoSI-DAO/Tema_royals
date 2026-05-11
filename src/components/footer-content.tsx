@@ -1,6 +1,7 @@
 "use client";
 
-import { Crown, Facebook, Instagram, Twitter, Youtube, LogIn, UserPlus } from "lucide-react";
+import Image from "next/image";
+import { Facebook, Instagram, Twitter, Youtube, LogIn, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAuthState } from "@/hooks/use-auth-state";
@@ -25,7 +26,13 @@ export function FooterContent({ settings }: FooterContentProps) {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col space-y-4">
             <Link href="/" className="flex items-center space-x-2">
-              <Crown className="h-6 w-6 text-accent" />
+              <Image
+                src="/temaroyalslogo.jpg"
+                alt="Tema Royals Sporting Club logo"
+                width={40}
+                height={40}
+                className="h-10 w-10 rounded-full bg-white object-contain p-0.5 ring-1 ring-primary/20"
+              />
               <span className="text-lg font-bold tracking-tighter">{clubName.toUpperCase()}</span>
             </Link>
             <p className="text-sm text-muted-foreground">

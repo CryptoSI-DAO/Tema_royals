@@ -4,36 +4,36 @@
 
 @layer base {
   :root {
-    --background: 252 18% 12%;
-    --foreground: 210 40% 98%;
-    --card: 253 20% 10%;
-    --card-foreground: 210 40% 98%;
-    --popover: 253 20% 10%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 262 72% 38%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 252 16% 23%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 252 16% 23%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 44 90% 61%;
-    --accent-foreground: 252 18% 12%;
+    --background: 220 43% 97%;
+    --foreground: 234 48% 18%;
+    --card: 0 0% 100%;
+    --card-foreground: 234 48% 18%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 234 48% 18%;
+    --primary: 239 50% 39%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 225 48% 92%;
+    --secondary-foreground: 234 48% 18%;
+    --muted: 224 35% 91%;
+    --muted-foreground: 224 15% 42%;
+    --accent: 239 50% 39%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 44 90% 61%;
+    --border: 224 30% 84%;
+    --input: 224 30% 84%;
+    --ring: 239 50% 39%;
     --radius: 0.75rem;
 
     /* Sidebar Variables */
-    --sidebar-background: 253 20% 10%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 262 72% 38%;
-    --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 252 16% 23%;
-    --sidebar-accent-foreground: 44 90% 61%;
-    --sidebar-border: 217.2 32.6% 17.5%;
-    --sidebar-ring: 44 90% 61%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 234 48% 18%;
+    --sidebar-primary: 239 50% 39%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 225 48% 92%;
+    --sidebar-accent-foreground: 239 50% 39%;
+    --sidebar-border: 224 30% 84%;
+    --sidebar-ring: 239 50% 39%;
   }
 }
 
@@ -46,5 +46,23 @@
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline;
+  }
+}
+
+@layer utilities {
+  @keyframes hero-zoom {
+    0%,
+    100% {
+      transform: scale(1.12);
+    }
+    50% {
+      transform: scale(1.03);
+    }
+  }
+
+  .animate-hero-zoom {
+    animation: hero-zoom 22s ease-in-out infinite;
+    transform-origin: center center;
+    will-change: transform;
   }
 }

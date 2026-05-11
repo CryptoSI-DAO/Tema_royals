@@ -11,6 +11,10 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Tema Royals FC | Official Site',
   description: 'Official website of Tema Royals FC football club.',
+  icons: {
+    icon: "/temaroyalslogo.jpg",
+    apple: "/temaroyalslogo.jpg",
+  },
 };
 
 export default function RootLayout({

@@ -7,7 +7,7 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, MapPin, Trophy, ArrowRight, Instagram, Twitter } from "lucide-react";
+import { Calendar, MapPin, Trophy, ArrowRight, Facebook, Instagram, Twitter } from "lucide-react";
 import { AIMatchInsight } from "@/components/ai-match-insight";
 
 export default function Home() {
@@ -28,22 +28,24 @@ export default function Home() {
             src={stadiumImg?.imageUrl || ""}
             alt={stadiumImg?.description || "Stadium"}
             fill
-            className="object-cover opacity-60"
+            className="animate-hero-zoom object-cover opacity-75"
             priority
             data-ai-hint={stadiumImg?.imageHint}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-            <Badge variant="secondary" className="mb-4 bg-accent/20 text-accent border-accent/30 px-4 py-1">
+          <div className="absolute inset-0 -z-10 bg-primary/10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/55 to-background/10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/10" />
+          <div className="absolute inset-0 flex flex-col items-start justify-center px-6 text-left sm:px-10 lg:px-20">
+            <Badge variant="secondary" className="mb-4 border-primary/30 bg-white/90 px-4 py-1 text-primary shadow-sm">
               Matchday Preview
             </Badge>
-            <h1 className="mb-6 text-4xl font-black tracking-tighter sm:text-7xl lg:text-8xl uppercase leading-tight">
+            <h1 className="mb-6 max-w-4xl text-4xl font-black uppercase leading-tight tracking-tighter text-foreground sm:text-7xl lg:text-8xl">
               CHASING <span className="text-accent italic">GLORY.</span>
             </h1>
-            <p className="max-w-xl mb-8 text-base text-muted-foreground sm:text-xl">
+            <p className="mb-8 max-w-xl text-base font-semibold leading-7 text-foreground drop-shadow-sm sm:text-xl">
               Experience matchday in Tema. Stand with the Royals as the club pushes into another ambitious season.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4 sm:px-0">
+            <div className="flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
               <Link href="/tickets" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full bg-primary hover:bg-primary/90 text-white font-bold h-12 px-8">
                   GET TICKETS
@@ -137,7 +139,33 @@ export default function Home() {
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight uppercase">STAY CONNECTED</h2>
             <p className="text-sm text-muted-foreground">Follow the Royals across all platforms.</p>
           </div>
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-3">
+            {/* Facebook Feed Placeholder */}
+            <Card className="bg-card/50 border-accent/10 hover:border-accent/30 transition-colors">
+              <CardHeader className="flex flex-row items-center gap-4">
+                <div className="h-10 w-10 rounded-full bg-[#1877f2] flex items-center justify-center shrink-0">
+                  <Facebook className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-lg font-bold">FACEBOOK</CardTitle>
+                  <Link
+                    href="https://www.facebook.com/profile.php?id=100082971770461&locale=cy_GB#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-accent hover:underline font-semibold"
+                  >
+                    Tema Royals SC
+                  </Link>
+                </div>
+              </CardHeader>
+              <CardContent className="h-48 flex items-center justify-center border-t border-accent/5 bg-accent/5 rounded-b-lg">
+                <p className="text-sm font-medium text-muted-foreground italic flex items-center gap-2">
+                  <span className="h-1 w-1 rounded-full bg-accent animate-pulse" />
+                  Feed coming soon
+                </p>
+              </CardContent>
+            </Card>
+
             {/* Instagram Feed Placeholder */}
             <Card className="bg-card/50 border-accent/10 hover:border-accent/30 transition-colors">
               <CardHeader className="flex flex-row items-center gap-4">
@@ -184,10 +212,10 @@ export default function Home() {
             <Link href="/merch" className="group">
               <div className="relative h-56 sm:h-64 overflow-hidden rounded-2xl border border-accent/20 transition-transform group-hover:scale-[1.02]">
                 <Image
-                  src={PlaceHolderImages.find(i => i.id === "merch-kit")?.imageUrl || ""}
-                  alt="Merch"
+                  src="/TemaRoyalsJersey.png"
+                  alt="Tema Royals jersey"
                   fill
-                  className="object-cover opacity-70 group-hover:opacity-100 transition-opacity"
+                  className="object-contain p-6 opacity-90 transition-transform duration-500 group-hover:scale-105"
                   data-ai-hint="soccer jersey"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />

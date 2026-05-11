@@ -1,23 +1,17 @@
 import Image from "next/image";
 import { Navbar } from "@/components/navbar";
 import { Footer } from "@/components/footer";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ShoppingCart } from "lucide-react";
 
 const PRODUCTS = [
-  { id: 1, name: "2024 Home Kit", price: "$85.00", cat: "Jerseys" },
-  { id: 2, name: "2024 Away Kit", price: "$85.00", cat: "Jerseys" },
-  { id: 3, name: "Royals Scarf", price: "$25.00", cat: "Accessories" },
-  { id: 4, name: "Training Top", price: "$45.00", cat: "Training" },
-  { id: 5, name: "Team Hoodie", price: "$65.00", cat: "Apparel" },
-  { id: 6, name: "Royals Cap", price: "$20.00", cat: "Accessories" },
+  { id: 1, name: "Tema Royals Jersey", price: "$30.00", cat: "Jerseys", image: "/TemaRoyalsJersey.png" },
+  { id: 2, name: "Tema Royals Cap", price: "$15.00", cat: "Accessories", image: "/temaroyalscap.png" },
+  { id: 3, name: "Tema Royals Away Kit", price: "$30.00", cat: "Jerseys", image: "/TemaRoyalsAwaykit.png" },
 ];
 
 export default function MerchPage() {
-  const kitImg = PlaceHolderImages.find(i => i.id === "merch-kit");
-
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
@@ -33,10 +27,10 @@ export default function MerchPage() {
               <Card key={prod.id} className="bg-card border-accent/10 overflow-hidden group">
                 <div className="relative aspect-square bg-muted">
                   <Image
-                    src={kitImg?.imageUrl || ""}
+                    src={prod.image}
                     alt={prod.name}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="object-contain p-6 transition-transform duration-500 group-hover:scale-105"
                     data-ai-hint="soccer kit"
                   />
                   <div className="absolute top-4 right-4">
