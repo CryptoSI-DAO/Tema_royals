@@ -1,4 +1,4 @@
-# **App Name**: Toman Mariners FC
+# **App Name**: Tema Royals FC
 
 ## Core Features:
 
@@ -12,9 +12,9 @@
 
 ## Style Guidelines:
 
-- Primary color: A deep, professional Mariner's Blue (#1F4EAD) evoking depth and strength, suitable for a professional sports team.
+- Primary color: A deep royal purple (#4C1D95) paired with gold accents (#F4C542), suitable for a confident Tema football identity.
 - Background color: A dark, slightly desaturated charcoal blue (#1F242E) providing a sophisticated and modern dark theme foundation.
-- Accent color: A vibrant, clear sky blue (#47CFEB) to highlight calls to action, interactive elements, and key information, creating strong contrast against the dark background.
+- Accent color: A warm gold (#F4C542) to highlight calls to action, interactive elements, and key information, creating a clear royal contrast against the dark background.
 - Body and headline font: 'Inter' (sans-serif), chosen for its modern, clean, and objective aesthetic, ensuring high readability for player stats, news, and official team information.
 - Use sharp, modern, and sports-themed vector icons that align with the professional brand of a soccer club.
 - Employ a modular and responsive layout, ensuring optimal viewing across all devices, with hero sections for prominent news and fixture details, and clean card-based designs for profiles.

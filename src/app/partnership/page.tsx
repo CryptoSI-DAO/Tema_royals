@@ -8,10 +8,10 @@ import { ShieldCheck, TrendingUp, Users, Globe } from "lucide-react";
 
 export default function PartnershipPage() {
   const sponsors = [
-    { name: "Global Port Logistics", tier: "Principal Partner" },
-    { name: "Ocean Energy", tier: "Official Kit Sponsor" },
-    { name: "Harbor Bank", tier: "Community Partner" },
-    { name: "Sail Beverages", tier: "Official Drink" },
+    { name: "Tema Port Logistics", tier: "Principal Partner" },
+    { name: "Gold Coast Energy", tier: "Official Kit Sponsor" },
+    { name: "Community Trust Bank", tier: "Community Partner" },
+    { name: "Royal Beverages", tier: "Official Drink" },
     { name: "Webara Studio", tier: "Digital Media Partner", href: "https://webarastudio.com" },
     { name: "TLC (Touchline Creator)", tier: "Digital Content Partner" },
   ];
@@ -24,7 +24,7 @@ export default function PartnershipPage() {
           <div className="max-w-4xl mx-auto mb-12 md:mb-16 text-center">
             <h1 className="text-3xl font-black tracking-tight sm:text-6xl mb-4 uppercase">PARTNERSHIPS</h1>
             <p className="text-muted-foreground text-base sm:text-lg">
-              Partner with Toman Mariners FC and connect your brand with our passionate community.
+              Partner with Tema Royals FC and connect your brand with our passionate community.
             </p>
           </div>
 
@@ -60,9 +60,9 @@ export default function PartnershipPage() {
           {/* Why Partner? */}
           <section className="grid gap-12 lg:grid-cols-2 items-center mb-20 md:mb-24">
             <div className="order-2 lg:order-1">
-              <h2 className="text-2xl sm:text-3xl font-black mb-6 uppercase">WHY PARTNER WITH THE MARINERS?</h2>
+              <h2 className="text-2xl sm:text-3xl font-black mb-6 uppercase">WHY PARTNER WITH THE ROYALS?</h2>
               <p className="text-sm sm:text-base text-muted-foreground mb-8">
-                Toman Mariners FC is more than just a soccer club. We are a cultural touchstone with a massive, loyal following that transcends age and demographic. Our partnership programs are designed to deliver real business value while supporting the growth of the beautiful game.
+                Tema Royals FC is more than just a football club. We are a Tema community platform with a loyal following across supporters, families, and young players. Our partnership programs are designed to deliver real business value while supporting the growth of the beautiful game.
               </p>
               <div className="grid grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-2">
@@ -115,7 +115,7 @@ export default function PartnershipPage() {
 
           {/* Become a Partner CTA */}
           <section className="bg-primary/20 rounded-3xl p-8 sm:p-12 text-center border border-accent/20">
-            <h2 className="text-2xl sm:text-3xl font-black mb-4 uppercase">READY TO SET SAIL WITH US?</h2>
+            <h2 className="text-2xl sm:text-3xl font-black mb-4 uppercase">READY TO GROW WITH US?</h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto mb-8">
               We offer bespoke sponsorship packages tailored to your brand's specific goals. Let's discuss how we can grow together.
             </p>

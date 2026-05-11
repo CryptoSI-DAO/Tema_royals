@@ -1,6 +1,6 @@
 "use client";
 
-import { Anchor, Facebook, Instagram, Twitter, Youtube, LogIn, UserPlus } from "lucide-react";
+import { Crown, Facebook, Instagram, Twitter, Youtube, LogIn, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useAuthState } from "@/hooks/use-auth-state";
@@ -13,7 +13,7 @@ type FooterContentProps = {
 export function FooterContent({ settings }: FooterContentProps) {
   const [year, setYear] = useState<number | null>(null);
   const isLoggedIn = useAuthState();
-  const clubName = settings.club_name || "Toman Mariners FC";
+  const clubName = settings.club_name || "Tema Royals FC";
 
   useEffect(() => {
     setYear(new Date().getFullYear());
@@ -25,11 +25,11 @@ export function FooterContent({ settings }: FooterContentProps) {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           <div className="flex flex-col space-y-4">
             <Link href="/" className="flex items-center space-x-2">
-              <Anchor className="h-6 w-6 text-accent" />
+              <Crown className="h-6 w-6 text-accent" />
               <span className="text-lg font-bold tracking-tighter">{clubName.toUpperCase()}</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Founded in 1921, {clubName} is a pillar of excellence and community pride in professional soccer.
+              {clubName} represents Tema with ambition, discipline, and community pride in Ghanaian football.
             </p>
             <div className="flex space-x-4">
               <Link href="#" className="text-muted-foreground hover:text-accent">
@@ -95,10 +95,10 @@ export function FooterContent({ settings }: FooterContentProps) {
           <div>
             <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider">Contact</h3>
             <address className="not-italic space-y-2 text-sm text-muted-foreground">
-              <p>{settings.stadium_name || "Mariner Dome"}</p>
-              <p>Port City, PC 10405</p>
-              <p>Phone: {settings.contact_phone || "+1 (555) MARINER"}</p>
-              <p>Email: {settings.contact_email || "contact@tomanmariners.com"}</p>
+              <p>{settings.stadium_name || "Tema Sports Stadium"}</p>
+              <p>Tema, Greater Accra</p>
+              <p>Phone: {settings.contact_phone || "+233 (0) 30 000 0000"}</p>
+              <p>Email: {settings.contact_email || "contact@temaroyalsfc.com"}</p>
             </address>
           </div>
         </div>

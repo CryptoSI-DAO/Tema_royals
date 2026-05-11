@@ -19,7 +19,7 @@ export default function TicketsPage() {
           <div className="max-w-4xl mx-auto mb-16 text-center">
             <h1 className="text-4xl font-black tracking-tight sm:text-6xl mb-4">MATCHDAY TICKETS</h1>
             <p className="text-muted-foreground text-lg">
-              Witness the passion, the power, and the goals. Join the Mariner Navy at the dome.
+              Witness the passion, the tempo, and the goals. Join the Royals faithful on matchday.
             </p>
           </div>
 
@@ -53,7 +53,7 @@ export default function TicketsPage() {
                 <CardTitle>Stadium Info</CardTitle>
               </CardHeader>
               <CardContent className="text-muted-foreground space-y-2">
-                <p><strong>Mariner Dome</strong></p>
+                <p><strong>Tema Sports Stadium</strong></p>
                 <p>Capacity: 25,000</p>
                 <p>Gates open 90 minutes before kickoff.</p>
                 <p>Parking available in lots A, B, and C.</p>
@@ -67,7 +67,7 @@ export default function TicketsPage() {
                 <CardTitle>Season Tickets</CardTitle>
               </CardHeader>
               <CardContent className="text-muted-foreground">
-                <p className="mb-4">Become a part of the crew for the entire 2024 season. Season ticket holders get exclusive benefits including 15% off at the Mariner Shop.</p>
+                <p className="mb-4">Become part of the Royals family for the entire season. Season ticket holders get exclusive benefits including 15% off at the Royals Shop.</p>
                 <Button variant="outline" className="border-accent text-accent">Learn More</Button>
               </CardContent>
             </Card>

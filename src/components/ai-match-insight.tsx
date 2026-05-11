@@ -47,7 +47,7 @@ export function AIMatchInsight({ context, title }: AIMatchInsightProps) {
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-lg font-semibold flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-accent" />
-          AI Mariner Insight
+          AI Royals Insight
         </CardTitle>
         <Button 
           variant="outline" 

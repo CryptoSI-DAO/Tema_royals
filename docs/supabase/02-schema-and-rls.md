@@ -240,7 +240,7 @@ If you use the `team-media` bucket:
 
 ## Notes For Rebranding
 
-The current mock data uses the placeholder team name `Mariners`. When a real club adopts this template, update:
+The live Tema Royals UI keeps the existing internal `Mariners` goal label and `mariners_score` database field for compatibility with the original schema. If you want the database to match the public brand exactly, update:
 - score column names if desired
 - goal `team` labels if desired
 - branding rows in `site_settings`

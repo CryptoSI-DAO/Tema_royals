@@ -154,7 +154,7 @@ export function OverviewSection({
               <Card key={fixture.id} className="border-accent/10 bg-card/30 p-4">
                 <p className="text-[10px] font-bold uppercase text-accent">{fixture.date}</p>
                 <p className="text-sm font-bold">
-                  Mariners{" "}
+                  Royals{" "}
                   <span className="text-accent">
                     {fixture.result?.marinersScore} - {fixture.result?.opponentScore}
                   </span>{" "}

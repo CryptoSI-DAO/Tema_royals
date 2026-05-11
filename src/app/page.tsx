@@ -13,9 +13,9 @@ import { AIMatchInsight } from "@/components/ai-match-insight";
 export default function Home() {
   const stadiumImg = PlaceHolderImages.find(img => img.id === "hero-stadium");
   
-  const lastMatchReport = "Toman Mariners secured a crucial 3-1 victory against Southern Anchors last Saturday. Captain Leo Marino opened the scoring in the 12th minute with a thunderous volley. The Anchors equalized just before halftime, but a double from star striker Elias Thorne in the 67th and 82nd minutes sealed the points for the Mariners at the Mariner Dome. Team spirit was high as the defense held firm under late pressure.";
+  const lastMatchReport = "Tema Royals secured a crucial 3-1 victory against Accra Lions B last Saturday. Captain Kofi Mensah opened the scoring in the 12th minute with a thunderous volley. Accra Lions B equalized just before halftime, but a double from striker Kwame Boateng in the 67th and 82nd minutes sealed the points for the Royals at Tema Sports Stadium. Team spirit was high as the defense held firm under late pressure.";
   
-  const nextMatchInfo = "Next Saturday at 18:00, Toman Mariners face the league leaders, Northern Gulls, at the Gulls' Nest. This top-of-the-table clash is expected to be a sell-out. The Mariners are coming off a win, while the Gulls are unbeaten in their last five. Tactical discipline will be key as Thorne looks to continue his scoring streak.";
+  const nextMatchInfo = "Next Saturday at 18:00, Tema Royals face Ashaiman City at Ashaiman Community Park. This local test is expected to draw strong support from both sides. The Royals are coming off a win, while Ashaiman City have been difficult to break down in recent weeks. Tactical discipline will be key as Boateng looks to continue his scoring streak.";
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -41,7 +41,7 @@ export default function Home() {
               CHASING <span className="text-accent italic">GLORY.</span>
             </h1>
             <p className="max-w-xl mb-8 text-base text-muted-foreground sm:text-xl">
-              Experience the roar of the crowd at Mariner Dome. Join us as we set sail for another championship season.
+              Experience matchday in Tema. Stand with the Royals as the club pushes into another ambitious season.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto px-4 sm:px-0">
               <Link href="/tickets" className="w-full sm:w-auto">
@@ -73,7 +73,7 @@ export default function Home() {
                     <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/40 flex items-center justify-center mb-2 mx-auto">
                       <Trophy className="text-accent h-6 w-6 sm:h-8 sm:w-8" />
                     </div>
-                    <span className="font-bold text-xs sm:text-sm block">MARINERS</span>
+                    <span className="font-bold text-xs sm:text-sm block">ROYALS</span>
                   </div>
                   <div className="text-4xl sm:text-6xl font-black flex items-center gap-3">
                     <span>3</span>
@@ -82,13 +82,13 @@ export default function Home() {
                   </div>
                   <div className="text-center">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-muted flex items-center justify-center mb-2 mx-auto">
-                      <div className="text-xl sm:text-2xl font-bold text-muted-foreground">SA</div>
+                      <div className="text-xl sm:text-2xl font-bold text-muted-foreground">AL</div>
                     </div>
-                    <span className="font-bold text-xs sm:text-sm block">ANCHORS</span>
+                    <span className="font-bold text-xs sm:text-sm block">ACCRA LIONS B</span>
                   </div>
                 </div>
                 <CardContent className="pt-6">
-                  <CardTitle className="mb-2 text-xl sm:text-2xl uppercase">Mariners Dominate Anchors at Home</CardTitle>
+                  <CardTitle className="mb-2 text-xl sm:text-2xl uppercase">Royals Take Control at Home</CardTitle>
                   <CardDescription className="line-clamp-3">
                     {lastMatchReport}
                   </CardDescription>
@@ -115,14 +115,14 @@ export default function Home() {
                     <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-accent" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg sm:text-xl uppercase">Vs. Northern Gulls</CardTitle>
+                    <CardTitle className="text-lg sm:text-xl uppercase">Vs. Ashaiman City</CardTitle>
                     <CardDescription className="text-xs sm:text-sm">Saturday, Oct 21 • 18:00</CardDescription>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                     <MapPin className="h-4 w-4 text-accent" />
-                    The Gulls' Nest, North Harbor
+                    Ashaiman Community Park
                   </div>
                   <AIMatchInsight title="Upcoming Fixture" context={nextMatchInfo} />
                 </CardContent>
@@ -135,7 +135,7 @@ export default function Home() {
         <section className="container mx-auto px-4 py-12 border-t border-accent/10">
           <div className="mb-8 text-center sm:text-left">
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight uppercase">STAY CONNECTED</h2>
-            <p className="text-sm text-muted-foreground">Follow the crew across all platforms.</p>
+            <p className="text-sm text-muted-foreground">Follow the Royals across all platforms.</p>
           </div>
           <div className="grid gap-8 md:grid-cols-2">
             {/* Instagram Feed Placeholder */}
@@ -146,7 +146,7 @@ export default function Home() {
                 </div>
                 <div>
                   <CardTitle className="text-lg font-bold">INSTAGRAM</CardTitle>
-                  <Link href="https://instagram.com" target="_blank" className="text-xs text-accent hover:underline font-semibold">@tomanmarinersfc</Link>
+                  <Link href="https://instagram.com" target="_blank" className="text-xs text-accent hover:underline font-semibold">@temaroyalsfc</Link>
                 </div>
               </CardHeader>
               <CardContent className="h-48 flex items-center justify-center border-t border-accent/5 bg-accent/5 rounded-b-lg">
@@ -165,7 +165,7 @@ export default function Home() {
                 </div>
                 <div>
                   <CardTitle className="text-lg font-bold">TWITTER / X</CardTitle>
-                  <Link href="https://twitter.com" target="_blank" className="text-xs text-accent hover:underline font-semibold">@TomanMariners</Link>
+                  <Link href="https://twitter.com" target="_blank" className="text-xs text-accent hover:underline font-semibold">@TemaRoyalsFC</Link>
                 </div>
               </CardHeader>
               <CardContent className="h-48 flex items-center justify-center border-t border-accent/5 bg-accent/5 rounded-b-lg">
@@ -223,7 +223,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/20 to-transparent" />
                 <div className="absolute bottom-6 left-6 pr-6">
                   <h3 className="text-xl sm:text-2xl font-bold uppercase">PARTNERSHIPS</h3>
-                  <p className="text-accent flex items-center gap-2 text-sm font-semibold uppercase">Grow with the Mariners <ArrowRight className="h-4 w-4" /></p>
+                  <p className="text-accent flex items-center gap-2 text-sm font-semibold uppercase">Grow with the Royals <ArrowRight className="h-4 w-4" /></p>
                 </div>
               </div>
             </Link>

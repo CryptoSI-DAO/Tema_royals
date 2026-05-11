@@ -205,7 +205,7 @@ function CompletedFixturesGrid({ fixtures, canCrud, onDelete }: CompletedFixture
                 {fixture.date}
               </p>
               <h3 className="text-base font-bold uppercase tracking-tight">
-                Mariners{" "}
+                Royals{" "}
                 <span className="mx-1 text-accent">
                   {fixture.result?.marinersScore} - {fixture.result?.opponentScore}
                 </span>{" "}
@@ -224,7 +224,7 @@ function CompletedFixturesGrid({ fixtures, canCrud, onDelete }: CompletedFixture
               <div className="flex items-center gap-2 text-xs text-muted-foreground" key={goal.id}>
                 <Trophy className="h-3 w-3 shrink-0 text-accent" />
                 <span className="truncate">
-                  {goal.player} ({goal.minute}') - {goal.team}
+                  {goal.player} ({goal.minute}') - {goal.team === "Mariners" ? "Royals" : goal.team}
                 </span>
               </div>
             ))}

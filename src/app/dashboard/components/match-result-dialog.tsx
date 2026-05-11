@@ -55,7 +55,7 @@ export function MatchResultDialog({
         <div className="space-y-6 py-4">
           <div className="grid grid-cols-2 gap-4 rounded-lg bg-muted/30 p-4 text-center sm:gap-8">
             <div>
-              <Label className="text-[10px] font-bold text-accent sm:text-xs">MARINERS</Label>
+              <Label className="text-[10px] font-bold text-accent sm:text-xs">ROYALS</Label>
               <Input
                 className="mt-1 text-center text-xl font-black sm:text-3xl"
                 onChange={(e) => onMarinersScoreChange(Number(e.target.value))}
@@ -116,7 +116,7 @@ export function MatchResultDialog({
                         onChange={(e) => updateGoal(index, { team: e.target.value as Goal["team"] })}
                         value={goal.team}
                       >
-                        <option value="Mariners">Mariners</option>
+                        <option value="Mariners">Royals</option>
                         <option value="Opponent">Opponent</option>
                       </select>
                     </div>

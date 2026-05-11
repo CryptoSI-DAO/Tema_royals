@@ -16,7 +16,7 @@ export default async function PlayersPage() {
           <div className="mb-12 text-center">
             <h1 className="text-4xl font-black tracking-tight sm:text-6xl mb-4">THE FIRST TEAM</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Meet the warriors representing Toman Mariners FC on the pitch. Dedication, skill, and heart.
+              Meet the players representing Tema Royals FC on the pitch. Discipline, skill, and pride in Tema.
             </p>
           </div>
 

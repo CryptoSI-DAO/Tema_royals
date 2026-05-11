@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Toman Mariners FC | Official Site',
-  description: 'Official website of Toman Mariners FC soccer club.',
+  title: 'Tema Royals FC | Official Site',
+  description: 'Official website of Tema Royals FC football club.',
 };
 
 export default function RootLayout({

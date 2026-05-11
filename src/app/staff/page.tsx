@@ -15,7 +15,7 @@ export default async function StaffPage() {
           <div className="mb-12 text-center">
             <h1 className="text-4xl font-black tracking-tight sm:text-6xl mb-4">LEADERSHIP & STAFF</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              The minds and hands behind the Mariners' success. Meet our dedicated coaching and management team.
+              The minds and hands behind the Royals&apos; progress. Meet our dedicated coaching and management team.
             </p>
           </div>
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Anchor, CalendarDays, Menu, X, ShoppingBag, Ticket, Users, Phone, ShieldCheck, LogOut } from "lucide-react";
+import { CalendarDays, Crown, Menu, X, ShoppingBag, Ticket, Users, Phone, ShieldCheck, LogOut } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
@@ -42,9 +42,9 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <Anchor className="h-8 w-8 text-accent" />
+              <Crown className="h-8 w-8 text-accent" />
               <span className="text-xl font-bold tracking-tighter text-foreground sm:inline-block">
-                TOMAN <span className="text-accent">MARINERS</span>
+                TEMA <span className="text-accent">ROYALS</span>
               </span>
             </Link>
           </div>

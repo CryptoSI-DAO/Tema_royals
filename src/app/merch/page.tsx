@@ -9,10 +9,10 @@ import { ShoppingCart } from "lucide-react";
 const PRODUCTS = [
   { id: 1, name: "2024 Home Kit", price: "$85.00", cat: "Jerseys" },
   { id: 2, name: "2024 Away Kit", price: "$85.00", cat: "Jerseys" },
-  { id: 3, name: "Mariner Scarf", price: "$25.00", cat: "Accessories" },
+  { id: 3, name: "Royals Scarf", price: "$25.00", cat: "Accessories" },
   { id: 4, name: "Training Top", price: "$45.00", cat: "Training" },
   { id: 5, name: "Team Hoodie", price: "$65.00", cat: "Apparel" },
-  { id: 6, name: "Mariner Cap", price: "$20.00", cat: "Accessories" },
+  { id: 6, name: "Royals Cap", price: "$20.00", cat: "Accessories" },
 ];
 
 export default function MerchPage() {
@@ -24,8 +24,8 @@ export default function MerchPage() {
       <main className="flex-1 py-16">
         <div className="container mx-auto px-4">
           <div className="mb-12">
-            <h1 className="text-4xl font-black tracking-tight sm:text-6xl mb-4">MARINER SHOP</h1>
-            <p className="text-muted-foreground">Wear the colors. Support the crew.</p>
+            <h1 className="text-4xl font-black tracking-tight sm:text-6xl mb-4">ROYALS SHOP</h1>
+            <p className="text-muted-foreground">Wear the colors. Support Tema.</p>
           </div>
 
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">

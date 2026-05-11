@@ -9,10 +9,10 @@ import { getSiteSettings } from "@/lib/team-data-loaders";
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();
-  const clubName = settings.club_name || "Toman Mariners FC";
-  const contactEmail = settings.contact_email || "contact@tomanmariners.com";
-  const contactPhone = settings.contact_phone || "+1 (555) MARINER";
-  const stadiumName = settings.stadium_name || "Mariner Dome";
+  const clubName = settings.club_name || "Tema Royals FC";
+  const contactEmail = settings.contact_email || "contact@temaroyalsfc.com";
+  const contactPhone = settings.contact_phone || "+233 (0) 30 000 0000";
+  const stadiumName = settings.stadium_name || "Tema Sports Stadium";
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -68,7 +68,7 @@ export default async function ContactPage() {
                   <div>
                     <p className="font-bold">Email Us</p>
                     <p className="text-sm sm:text-base text-muted-foreground">General: {contactEmail}</p>
-                    <p className="text-sm sm:text-base text-muted-foreground">Press: media@tomanmariners.com</p>
+                    <p className="text-sm sm:text-base text-muted-foreground">Press: media@temaroyalsfc.com</p>
                   </div>
                 </div>
 
@@ -90,7 +90,7 @@ export default async function ContactPage() {
                   <div>
                     <p className="font-bold">Visit Us</p>
                     <p className="text-sm sm:text-base text-muted-foreground">{stadiumName} Stadium Office</p>
-                    <p className="text-sm sm:text-base text-muted-foreground">Port City, PC 10405</p>
+                    <p className="text-sm sm:text-base text-muted-foreground">Tema, Greater Accra</p>
                   </div>
                 </div>
               </div>

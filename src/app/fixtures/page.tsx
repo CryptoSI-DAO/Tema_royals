@@ -25,7 +25,7 @@ export default async function FixturesPage() {
               </Badge>
               <h1 className="text-4xl font-black tracking-tight sm:text-6xl">FIXTURES & RESULTS</h1>
               <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-                Track the Mariners&apos; upcoming tests and revisit the latest scorelines, venues, and key moments from recent matches.
+                Track the Royals&apos; upcoming tests and revisit the latest scorelines, venues, and key moments from recent matches.
               </p>
             </div>
 
@@ -33,7 +33,7 @@ export default async function FixturesPage() {
               {nextFixture ? (
                 <FeatureCard
                   eyebrow="Next Up"
-                  title={`Mariners vs ${nextFixture.opponent}`}
+                  title={`Royals vs ${nextFixture.opponent}`}
                   accent="primary"
                 >
                   <div className="grid gap-4 sm:grid-cols-2">
@@ -48,7 +48,7 @@ export default async function FixturesPage() {
               {latestResult?.result ? (
                 <FeatureCard
                   eyebrow="Latest Result"
-                  title={`Mariners ${latestResult.result.marinersScore} - ${latestResult.result.opponentScore} ${latestResult.opponent}`}
+                  title={`Royals ${latestResult.result.marinersScore} - ${latestResult.result.opponentScore} ${latestResult.opponent}`}
                   accent="accent"
                 >
                   <div className="space-y-4">
@@ -92,7 +92,7 @@ export default async function FixturesPage() {
                         <Badge variant="outline" className="border-accent/20 text-accent">
                           Upcoming
                         </Badge>
-                        <h2 className="text-2xl font-bold uppercase">Mariners vs {fixture.opponent}</h2>
+                        <h2 className="text-2xl font-bold uppercase">Royals vs {fixture.opponent}</h2>
                         <p className="text-sm text-muted-foreground">{fixture.venue}</p>
                       </div>
                       <div className="grid gap-4 sm:grid-cols-2 md:min-w-[18rem]">
@@ -116,7 +116,7 @@ export default async function FixturesPage() {
                     <CardHeader className="border-b border-accent/10 bg-accent/5">
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                          <CardTitle className="text-xl uppercase">Mariners vs {fixture.opponent}</CardTitle>
+                          <CardTitle className="text-xl uppercase">Royals vs {fixture.opponent}</CardTitle>
                           <p className="mt-1 text-sm text-muted-foreground">
                             {formatFixtureDate(fixture.date)} • {fixture.venue}
                           </p>
@@ -146,7 +146,7 @@ export default async function FixturesPage() {
                             >
                               <div>
                                 <p className="font-semibold">{goal.player}</p>
-                                <p className="text-sm text-muted-foreground">{goal.team}</p>
+                                <p className="text-sm text-muted-foreground">{formatGoalTeam(goal.team)}</p>
                               </div>
                               <Badge variant={goal.team === "Mariners" ? "default" : "secondary"}>
                                 {goal.minute}&apos;
@@ -166,6 +166,10 @@ export default async function FixturesPage() {
       <Footer settings={settings} />
     </div>
   );
+}
+
+function formatGoalTeam(team: string) {
+  return team === "Mariners" ? "Royals" : team;
 }
 
 function SectionHeading({ title, copy }: { title: string; copy: string }) {

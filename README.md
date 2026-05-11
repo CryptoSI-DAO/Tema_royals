@@ -1,6 +1,6 @@
-# Toman Mariners FC Site
+# Tema Royals FC Site
 
-This repository contains a Next.js club website for **Toman Mariners FC**. It includes a public-facing marketing site, a fixtures and results page, a login flow, and an admin dashboard that can run in either local demo mode or live mode with Supabase.
+This repository contains a Next.js club website for **Tema Royals FC**. It includes a public-facing marketing site, a fixtures and results page, a login flow, and an admin dashboard that can run in either local demo mode or live mode with Supabase.
 
 The project is no longer just a generic football template. It already has concrete routes, shared site chrome, seeded club data, Supabase wiring, and an AI match insight flow.
 

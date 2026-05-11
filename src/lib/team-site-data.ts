@@ -41,28 +41,28 @@ export type StaffMember = {
 export const INITIAL_FIXTURES: Fixture[] = [
   {
     id: "1",
-    opponent: "Southern Anchors",
+    opponent: "Accra Lions B",
     date: "2024-10-14",
     time: "15:00",
-    venue: "Mariner Dome",
+    venue: "Tema Sports Stadium",
     status: "completed",
     result: {
       marinersScore: 3,
       opponentScore: 1,
       goals: [
-        { id: "g1", player: "Leo Marino", minute: 12, team: "Mariners" },
+        { id: "g1", player: "Kofi Mensah", minute: 12, team: "Mariners" },
         { id: "g2", player: "Opponent", minute: 44, team: "Opponent" },
-        { id: "g3", player: "Elias Thorne", minute: 67, team: "Mariners" },
-        { id: "g4", player: "Elias Thorne", minute: 82, team: "Mariners" },
+        { id: "g3", player: "Kwame Boateng", minute: 67, team: "Mariners" },
+        { id: "g4", player: "Kwame Boateng", minute: 82, team: "Mariners" },
       ],
     },
   },
   {
     id: "2",
-    opponent: "Northern Gulls",
+    opponent: "Ashaiman City",
     date: "2024-10-21",
     time: "18:00",
-    venue: "Gulls' Nest",
+    venue: "Ashaiman Community Park",
     status: "upcoming",
   },
 ];
@@ -70,7 +70,7 @@ export const INITIAL_FIXTURES: Fixture[] = [
 export const INITIAL_PLAYERS: Player[] = [
   {
     id: "p1",
-    name: "Leo Marino",
+    name: "Kofi Mensah",
     pos: "Center Back",
     secondPos: "Right Back",
     height: "188cm",
@@ -78,7 +78,7 @@ export const INITIAL_PLAYERS: Player[] = [
   },
   {
     id: "p2",
-    name: "Elias Thorne",
+    name: "Kwame Boateng",
     pos: "Striker",
     secondPos: "Left Winger",
     height: "182cm",
@@ -89,16 +89,16 @@ export const INITIAL_PLAYERS: Player[] = [
 export const INITIAL_STAFF: StaffMember[] = [
   {
     id: "s1",
-    name: "Victor Helm",
+    name: "Isaac Osei",
     role: "Head Coach",
-    bio: "A master tactician with 20 years of experience.",
+    bio: "A disciplined tactician focused on compact defending and fast attacking transitions.",
     imageUrl: "https://picsum.photos/seed/staff1/400/500",
   },
   {
     id: "s2",
-    name: "Sarah Anchor",
+    name: "Ama Quartey",
     role: "Sporting Director",
-    bio: "Leading the club's long-term vision and recruitment.",
+    bio: "Leading the club's long-term football strategy, recruitment, and academy pathway.",
     imageUrl: "https://picsum.photos/seed/staff2/400/500",
   },
 ];
