@@ -12,8 +12,15 @@ export const metadata: Metadata = {
   title: 'Tema Royals FC | Official Site',
   description: 'Official website of Tema Royals FC football club.',
   icons: {
-    icon: "/temaroyalslogo.jpg",
-    apple: "/temaroyalslogo.jpg",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: "/apple-touch-icon.png",
+    other: [
+      { rel: "icon", url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { rel: "icon", url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
   },
 };
 

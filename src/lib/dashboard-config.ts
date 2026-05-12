@@ -4,12 +4,10 @@ import {
   Heart,
   LayoutDashboard,
   ShieldCheck,
-  ShoppingCart,
   User,
   UserCog,
   UserPlus,
   Users,
-  Video,
 } from "lucide-react";
 
 /** Matches any Lucide icon component */
@@ -89,13 +87,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     crudRoles: ["admin", "club"],
   },
   {
-    id: "fixture-media",
-    label: "Fixture Media",
-    icon: Video,
-    roles: ["admin", "club", "creator"],
-    crudRoles: ["admin", "creator"],
-  },
-  {
     id: "submissions",
     label: "Player Submissions",
     icon: UserPlus,
@@ -107,13 +98,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     label: "User Management",
     icon: UserCog,
     roles: ["admin"],
-    crudRoles: ["admin"],
-  },
-  {
-    id: "purchases",
-    label: "Fan Purchases",
-    icon: ShoppingCart,
-    roles: ["admin", "fan"],
     crudRoles: ["admin"],
   },
   {
