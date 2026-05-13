@@ -9,8 +9,8 @@ import { getSiteSettings } from "@/lib/team-data-loaders";
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();
-  const clubName = settings.club_name || "Tema Royals FC";
-  const contactEmail = settings.contact_email || "contact@temaroyalsfc.com";
+  const clubName = settings.club_name || "Tema Royals SC";
+  const contactEmail = settings.contact_email || "contact@temaroyalssc.com";
   const contactPhone = settings.contact_phone || "+233 (0) 30 000 0000";
   const stadiumName = settings.stadium_name || "Tema Sports Stadium";
 
@@ -67,8 +67,8 @@ export default async function ContactPage() {
                   </div>
                   <div>
                     <p className="font-bold">Email Us</p>
-                    <p className="text-sm sm:text-base text-muted-foreground">General: {contactEmail}</p>
-                    <p className="text-sm sm:text-base text-muted-foreground">Press: media@temaroyalsfc.com</p>
+                    <p className="break-all text-sm text-muted-foreground sm:text-base">General: {contactEmail}</p>
+                    <p className="break-all text-sm text-muted-foreground sm:text-base">Press: media@temaroyalssc.com</p>
                   </div>
                 </div>
 

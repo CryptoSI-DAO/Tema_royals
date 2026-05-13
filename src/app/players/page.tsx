@@ -16,7 +16,7 @@ export default async function PlayersPage() {
           <div className="mb-12 text-center">
             <h1 className="text-4xl font-black tracking-tight sm:text-6xl mb-4">THE FIRST TEAM</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Meet the players representing Tema Royals FC on the pitch. Discipline, skill, and pride in Tema.
+              Meet the players representing Tema Royals SC on the pitch. Discipline, skill, and pride in Tema.
             </p>
           </div>
 
@@ -39,9 +39,9 @@ export default async function PlayersPage() {
                   </div>
                 </div>
                 <CardHeader className="p-6">
-                  <div className="flex items-center justify-between mb-2 gap-3">
-                    <h3 className="text-2xl font-bold">{player.name}</h3>
-                    <Badge variant="secondary" className="bg-primary/40 text-accent">{player.pos}</Badge>
+                  <div className="mb-2 flex items-start justify-between gap-3">
+                    <h3 className="min-w-0 break-words text-2xl font-bold">{player.name}</h3>
+                    <Badge variant="secondary" className="shrink-0 bg-primary/40 text-accent">{player.pos}</Badge>
                   </div>
                   <CardContent className="p-0 text-muted-foreground text-sm">
                     {player.secondPos ? `${player.secondPos} option` : "First team squad member"}

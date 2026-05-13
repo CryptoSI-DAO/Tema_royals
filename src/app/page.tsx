@@ -65,28 +65,28 @@ export default function Home() {
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Latest Result */}
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-start justify-between gap-3">
                 <h2 className="text-2xl sm:text-3xl font-bold tracking-tight uppercase">LATEST RESULT</h2>
                 <Badge variant="outline">League Match</Badge>
               </div>
               <Card className="bg-card border-accent/20 overflow-hidden">
-                <div className="p-6 sm:p-10 flex items-center justify-center gap-4 sm:gap-10 bg-gradient-to-br from-primary/20 to-accent/10">
-                  <div className="text-center">
+                <div className="p-4 sm:p-10 flex items-center justify-center gap-3 sm:gap-10 bg-gradient-to-br from-primary/20 to-accent/10">
+                  <div className="min-w-0 text-center">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-primary/40 flex items-center justify-center mb-2 mx-auto">
                       <Trophy className="text-accent h-6 w-6 sm:h-8 sm:w-8" />
                     </div>
-                    <span className="font-bold text-xs sm:text-sm block">ROYALS</span>
+                    <span className="block max-w-20 break-words text-xs font-bold sm:max-w-none sm:text-sm">ROYALS</span>
                   </div>
-                  <div className="text-4xl sm:text-6xl font-black flex items-center gap-3">
+                  <div className="flex shrink-0 items-center gap-2 text-3xl font-black sm:gap-3 sm:text-6xl">
                     <span>3</span>
                     <span className="text-accent text-xl sm:text-3xl">-</span>
                     <span>1</span>
                   </div>
-                  <div className="text-center">
+                  <div className="min-w-0 text-center">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-muted flex items-center justify-center mb-2 mx-auto">
                       <div className="text-xl sm:text-2xl font-bold text-muted-foreground">AL</div>
                     </div>
-                    <span className="font-bold text-xs sm:text-sm block">ACCRA LIONS B</span>
+                    <span className="block max-w-24 break-words text-xs font-bold sm:max-w-none sm:text-sm">ACCRA LIONS B</span>
                   </div>
                 </div>
                 <CardContent className="pt-6">
@@ -103,7 +103,7 @@ export default function Home() {
 
             {/* Upcoming Fixture */}
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-wrap items-start justify-between gap-3">
                 <h2 className="text-2xl sm:text-3xl font-bold tracking-tight uppercase">NEXT FIXTURE</h2>
                 <Link href="/tickets">
                   <Button variant="link" className="text-accent p-0 flex items-center gap-1 text-sm uppercase font-bold">
@@ -174,7 +174,7 @@ export default function Home() {
                 </div>
                 <div>
                   <CardTitle className="text-lg font-bold">INSTAGRAM</CardTitle>
-                  <Link href="https://instagram.com" target="_blank" className="text-xs text-accent hover:underline font-semibold">@temaroyalsfc</Link>
+                  <Link href="https://instagram.com" target="_blank" className="text-xs text-accent hover:underline font-semibold">@temaroyalssc</Link>
                 </div>
               </CardHeader>
               <CardContent className="h-48 flex items-center justify-center border-t border-accent/5 bg-accent/5 rounded-b-lg">
@@ -193,7 +193,7 @@ export default function Home() {
                 </div>
                 <div>
                   <CardTitle className="text-lg font-bold">TWITTER / X</CardTitle>
-                  <Link href="https://twitter.com" target="_blank" className="text-xs text-accent hover:underline font-semibold">@TemaRoyalsFC</Link>
+                  <Link href="https://twitter.com" target="_blank" className="text-xs text-accent hover:underline font-semibold">@TemaRoyalsSC</Link>
                 </div>
               </CardHeader>
               <CardContent className="h-48 flex items-center justify-center border-t border-accent/5 bg-accent/5 rounded-b-lg">

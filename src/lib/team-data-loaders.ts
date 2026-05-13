@@ -22,12 +22,12 @@ export type SiteSettingsRow = Database["public"]["Tables"]["site_settings"]["Row
 
 export const DEFAULT_SITE_SETTINGS: SiteSettingsRow = {
   id: "default-site-settings",
-  club_name: "Tema Royals FC",
+  club_name: "Tema Royals SC",
   short_name: "Royals",
   primary_color: "#31328f",
   accent_color: "#ffffff",
   stadium_name: "Tema Sports Stadium",
-  contact_email: "contact@temaroyalsfc.com",
+  contact_email: "contact@temaroyalssc.com",
   contact_phone: "+233 (0) 30 000 0000",
   registration_open: false,
   registration_password: null,

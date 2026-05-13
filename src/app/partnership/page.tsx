@@ -24,7 +24,7 @@ export default function PartnershipPage() {
           <div className="max-w-4xl mx-auto mb-12 md:mb-16 text-center">
             <h1 className="text-3xl font-black tracking-tight sm:text-6xl mb-4 uppercase">PARTNERSHIPS</h1>
             <p className="text-muted-foreground text-base sm:text-lg">
-              Partner with Tema Royals FC and connect your brand with our passionate community.
+              Partner with Tema Royals SC and connect your brand with our passionate community.
             </p>
           </div>
 
@@ -62,7 +62,7 @@ export default function PartnershipPage() {
             <div className="order-2 lg:order-1">
               <h2 className="text-2xl sm:text-3xl font-black mb-6 uppercase">WHY PARTNER WITH THE ROYALS?</h2>
               <p className="text-sm sm:text-base text-muted-foreground mb-8">
-                Tema Royals FC is more than just a football club. We are a Tema community platform with a loyal following across supporters, families, and young players. Our partnership programs are designed to deliver real business value while supporting the growth of the beautiful game.
+                Tema Royals SC is more than just a football club. We are a Tema community platform with a loyal following across supporters, families, and young players. Our partnership programs are designed to deliver real business value while supporting the growth of the beautiful game.
               </p>
               <div className="grid grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-2">

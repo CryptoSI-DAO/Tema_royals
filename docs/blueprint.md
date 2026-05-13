@@ -1,4 +1,4 @@
-# **App Name**: Tema Royals FC
+# **App Name**: Tema Royals SC
 
 ## Core Features:
 

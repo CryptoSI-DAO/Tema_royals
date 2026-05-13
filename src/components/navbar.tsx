@@ -61,7 +61,7 @@ export function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <div className="ml-10 flex items-baseline space-x-4">
               {navItems.map((item) => (
                 <Link
@@ -87,7 +87,7 @@ export function Navbar() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="flex md:hidden">
+          <div className="flex lg:hidden">
             <Button
               variant="ghost"
               size="icon"
@@ -102,7 +102,7 @@ export function Navbar() {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden border-t bg-card animate-in slide-in-from-top-2">
+        <div className="lg:hidden border-t bg-card animate-in slide-in-from-top-2">
           <div className="space-y-1 px-2 pb-3 pt-2">
             {navItems.map((item) => (
               <Link

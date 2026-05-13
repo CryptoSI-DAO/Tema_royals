@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Tema Royals FC | Official Site',
-  description: 'Official website of Tema Royals FC football club.',
+  title: 'Tema Royals SC | Official Site',
+  description: 'Official website of Tema Royals SC football club.',
   icons: {
     icon: [
       { url: "/favicon.ico" },

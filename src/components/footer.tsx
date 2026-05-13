@@ -5,12 +5,12 @@ import type { SiteSettingsRow } from "@/lib/team-data-loaders";
 
 const DEFAULT_FOOTER_SETTINGS: SiteSettingsRow = {
   id: "default-footer-settings",
-  club_name: "Tema Royals FC",
+  club_name: "Tema Royals SC",
   short_name: "Royals",
   primary_color: "#31328f",
   accent_color: "#ffffff",
   stadium_name: "Tema Sports Stadium",
-  contact_email: "contact@temaroyalsfc.com",
+  contact_email: "contact@temaroyalssc.com",
   contact_phone: "+233 (0) 30 000 0000",
   registration_open: false,
   registration_password: null,

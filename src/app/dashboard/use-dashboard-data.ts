@@ -28,12 +28,12 @@ import {
 
 const DEMO_SITE_SETTINGS: SiteSettingsRow = {
   id: "demo-site-settings",
-  club_name: "Tema Royals FC",
+  club_name: "Tema Royals SC",
   short_name: "Royals",
   primary_color: "#31328f",
   accent_color: "#ffffff",
   stadium_name: "Tema Sports Stadium",
-  contact_email: "hello@temaroyalsfc.example",
+  contact_email: "hello@temaroyalssc.example",
   contact_phone: "+233 (0) 30 000 0000",
   registration_open: false,
   registration_password: null,

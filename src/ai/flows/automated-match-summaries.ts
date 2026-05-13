@@ -1,7 +1,7 @@
 'use server';
 /**
  * @fileOverview This file provides an AI flow for generating concise summaries of past match reports
- * and previews of upcoming fixtures for Tema Royals FC.
+ * and previews of upcoming fixtures for Tema Royals SC.
  *
  * - generateMatchSummary - A function that generates a summary or preview based on the provided text.
  * - MatchSummaryInput - The input type for the generateMatchSummary function.
@@ -29,13 +29,13 @@ const matchSummaryPrompt = ai.definePrompt({
   name: 'matchSummaryPrompt',
   input: {schema: MatchSummaryInputSchema},
   output: {schema: MatchSummaryOutputSchema},
-  prompt: `You are an AI assistant providing insights for Tema Royals FC fans.
+  prompt: `You are an AI assistant providing insights for Tema Royals SC fans.
 Based on the following provided text, generate a concise summary or preview.
 
 If the text is a match report for a past game, summarize it by highlighting key events, goals, goal scorers, and the final score.
 If the text describes an upcoming fixture, create a preview including participating teams, date, time, venue, and what fans can look forward to.
 
-Keep the output to 2-3 paragraphs, focusing on information relevant to Tema Royals FC.
+Keep the output to 2-3 paragraphs, focusing on information relevant to Tema Royals SC.
 
 Text to process:
 {{{context}}}`,

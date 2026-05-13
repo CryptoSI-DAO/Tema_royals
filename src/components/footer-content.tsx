@@ -14,7 +14,7 @@ type FooterContentProps = {
 export function FooterContent({ settings }: FooterContentProps) {
   const [year, setYear] = useState<number | null>(null);
   const isLoggedIn = useAuthState();
-  const clubName = settings.club_name || "Tema Royals FC";
+  const clubName = settings.club_name || "Tema Royals SC";
 
   useEffect(() => {
     setYear(new Date().getFullYear());
@@ -105,7 +105,7 @@ export function FooterContent({ settings }: FooterContentProps) {
               <p>{settings.stadium_name || "Tema Sports Stadium"}</p>
               <p>Tema, Greater Accra</p>
               <p>Phone: {settings.contact_phone || "+233 (0) 30 000 0000"}</p>
-              <p>Email: {settings.contact_email || "contact@temaroyalsfc.com"}</p>
+              <p>Email: {settings.contact_email || "contact@temaroyalssc.com"}</p>
             </address>
           </div>
         </div>

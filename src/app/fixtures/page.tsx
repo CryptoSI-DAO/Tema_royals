@@ -87,12 +87,12 @@ export default async function FixturesPage() {
               <div className="space-y-4">
                 {upcomingFixtures.map((fixture) => (
                   <Card key={fixture.id} className="border-primary/20 bg-card/80">
-                    <CardContent className="flex flex-col gap-6 p-6 md:flex-row md:items-center md:justify-between">
-                      <div className="space-y-2">
+                    <CardContent className="flex flex-col gap-6 p-4 sm:p-6 md:flex-row md:items-center md:justify-between">
+                      <div className="min-w-0 space-y-2">
                         <Badge variant="outline" className="border-accent/20 text-accent">
                           Upcoming
                         </Badge>
-                        <h2 className="text-2xl font-bold uppercase">Royals vs {fixture.opponent}</h2>
+                        <h2 className="break-words text-xl font-bold uppercase sm:text-2xl">Royals vs {fixture.opponent}</h2>
                         <p className="text-sm text-muted-foreground">{fixture.venue}</p>
                       </div>
                       <div className="grid gap-4 sm:grid-cols-2 md:min-w-[18rem]">
@@ -115,7 +115,7 @@ export default async function FixturesPage() {
                   <Card key={fixture.id} className="overflow-hidden border-accent/20 bg-card/80">
                     <CardHeader className="border-b border-accent/10 bg-accent/5">
                       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                        <div>
+                        <div className="min-w-0">
                           <CardTitle className="text-xl uppercase">Royals vs {fixture.opponent}</CardTitle>
                           <p className="mt-1 text-sm text-muted-foreground">
                             {formatFixtureDate(fixture.date)} • {fixture.venue}
@@ -144,7 +144,7 @@ export default async function FixturesPage() {
                               key={goal.id}
                               className="flex items-center justify-between rounded-xl border border-border/80 bg-background/50 px-4 py-3"
                             >
-                              <div>
+                              <div className="min-w-0">
                                 <p className="font-semibold">{goal.player}</p>
                                 <p className="text-sm text-muted-foreground">{formatGoalTeam(goal.team)}</p>
                               </div>
@@ -207,7 +207,7 @@ function FeatureCard({
         >
           {eyebrow}
         </Badge>
-        <CardTitle className="text-2xl uppercase sm:text-3xl">{title}</CardTitle>
+        <CardTitle className="break-words text-2xl uppercase sm:text-3xl">{title}</CardTitle>
       </CardHeader>
       <CardContent>{children}</CardContent>
     </Card>
@@ -228,9 +228,9 @@ function InfoRow({
       <div className="rounded-lg bg-accent/10 p-2">
         <Icon className="h-4 w-4 text-accent" />
       </div>
-      <div>
+      <div className="min-w-0">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">{label}</p>
-        <p className="text-sm font-medium sm:text-base">{value}</p>
+        <p className="break-words text-sm font-medium sm:text-base">{value}</p>
       </div>
     </div>
   );
