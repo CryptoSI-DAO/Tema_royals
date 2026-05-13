@@ -109,8 +109,31 @@ export function FooterContent({ settings }: FooterContentProps) {
             </address>
           </div>
         </div>
-        <div className="mt-12 border-t pt-8 text-center text-xs text-muted-foreground">
-          © {year || "..."} {clubName}. All rights reserved.
+        <div className="mt-12 flex flex-col items-center justify-between gap-5 border-t pt-8 text-center text-xs text-muted-foreground sm:flex-row sm:text-left">
+          <p>© {year || "..."} {clubName}. All rights reserved.</p>
+          <Link
+            href="https://webarastudio.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Visit Webara Studio"
+            className="group relative block h-14 w-14 shrink-0 overflow-hidden rounded-lg ring-1 ring-border transition hover:scale-105 hover:ring-accent/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            <Image
+              src="/webarabadge.png"
+              alt="Built with love by Webara"
+              width={56}
+              height={56}
+              className="h-full w-full object-cover transition-opacity duration-200 group-hover:opacity-0"
+            />
+            <Image
+              src="/webarabadgelight.png"
+              alt=""
+              width={56}
+              height={56}
+              aria-hidden="true"
+              className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+            />
+          </Link>
         </div>
       </div>
     </footer>
