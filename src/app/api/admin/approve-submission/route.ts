@@ -164,13 +164,16 @@ export async function POST(request: Request) {
     }
 
     // ── 6. Create player row ─────────────────────────────────────────────────
+    const rawHeight = editedFields?.height ?? submission.height;
+    const parsedHeightCm = rawHeight ? parseInt(rawHeight, 10) : null;
+
     const { data: newPlayer, error: playerError } = await adminClient
       .from("players")
       .insert({
         name: editedFields?.name || submission.name,
         pos: editedFields?.pos || submission.pos,
         second_pos: editedFields?.second_pos ?? submission.second_pos,
-        height: editedFields?.height ?? submission.height,
+        height_cm: isNaN(parsedHeightCm as number) ? null : parsedHeightCm,
         image_url: editedFields?.image_url ?? submission.image_url,
         squad_number: editedFields?.squad_number ?? submission.squad_number,
         user_id: newUser.user.id,

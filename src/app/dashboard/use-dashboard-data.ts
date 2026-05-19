@@ -8,9 +8,11 @@ import {
   INITIAL_FIXTURES,
   INITIAL_PLAYERS,
   INITIAL_STAFF,
+  INITIAL_OWNERS,
   type Fixture,
   type Player,
   type StaffMember,
+  type Owner,
 } from "@/lib/team-site-data";
 import type { UserRole } from "@/lib/dashboard-config";
 import type { DashboardMode, SupabaseClient } from "./types";
@@ -53,6 +55,7 @@ export function useDashboardData() {
   const [fixtures, setFixtures] = useState<Fixture[]>(INITIAL_FIXTURES);
   const [players, setPlayers] = useState<Player[]>(INITIAL_PLAYERS);
   const [staff, setStaff] = useState<StaffMember[]>(INITIAL_STAFF);
+  const [owners, setOwners] = useState<Owner[]>(INITIAL_OWNERS);
   const [partnerships, setPartnerships] = useState<PartnershipRow[]>([]);
   const [fixtureMedia, setFixtureMedia] = useState<FixtureMediaRow[]>([]);
   const [fanPurchases, setFanPurchases] = useState<FanPurchaseRow[]>([]);
@@ -116,6 +119,7 @@ export function useDashboardData() {
     setFixtures(data.fixtures);
     setPlayers(data.players);
     setStaff(data.staff);
+    setOwners(data.owners);
 
     const effectiveRole = roleOverride ?? userRole;
     const effectiveId = idOverride !== undefined ? idOverride : userId;
@@ -195,6 +199,7 @@ export function useDashboardData() {
     fixtures,
     players,
     staff,
+    owners,
     partnerships,
     fixtureMedia,
     fanPurchases,
@@ -209,6 +214,7 @@ export function useDashboardData() {
     setFixtures,
     setPlayers,
     setStaff,
+    setOwners,
     setPartnerships,
     setFixtureMedia,
     setFanPurchases,
@@ -221,13 +227,14 @@ export function useDashboardData() {
 
 function mapLegacyRole(role: string): UserRole {
   const roleMap: Record<string, UserRole> = {
-    owner: "admin",
+    owner: "owner",
     admin: "admin",
     editor: "club",
     club: "club",
     creator: "creator",
     player: "player",
     fan: "fan",
+    staff: "staff",
   };
 
   return roleMap[role] ?? "fan";

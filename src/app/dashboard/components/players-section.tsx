@@ -7,6 +7,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -14,6 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
 import type { Player } from "@/lib/team-site-data";
 import type { SupabaseClient, DashboardMode } from "../types";
 import { createPlayer, deletePlayer, getMutationErrorMessage } from "../dashboard-mutations";
@@ -46,8 +54,19 @@ export function PlayersSection({
   const [pName, setPName] = useState("");
   const [pPos, setPPos] = useState("");
   const [pSecondPos, setPSecondPos] = useState("");
-  const [pHeight, setPHeight] = useState("");
+  const [pSquadNumber, setPSquadNumber] = useState("");
+  const [pHeightCm, setPHeightCm] = useState("");
+  const [pWeightKg, setPWeightKg] = useState("");
+  const [pDateOfBirth, setPDateOfBirth] = useState("");
+  const [pNationality, setPNationality] = useState("");
+  const [pFoot, setPFoot] = useState<string>("");
   const [pImageUrl, setPImageUrl] = useState("");
+  const [pJoinedDate, setPJoinedDate] = useState("");
+  const [pPreviousClub, setPPreviousClub] = useState("");
+  const [pBio, setPBio] = useState("");
+  const [pFavouriteSong, setPFavouriteSong] = useState("");
+  const [pInstagramUrl, setPInstagramUrl] = useState("");
+  const [pFacebookUrl, setPFacebookUrl] = useState("");
 
   async function handleAdd() {
     if (!pName || !pPos) {
@@ -61,8 +80,22 @@ export function PlayersSection({
         name: pName,
         pos: pPos,
         secondPos: pSecondPos,
-        height: pHeight,
+        squadNumber: pSquadNumber ? parseInt(pSquadNumber) : null,
+        heightCm: pHeightCm ? parseInt(pHeightCm) : null,
+        weightKg: pWeightKg ? parseInt(pWeightKg) : null,
+        dateOfBirth: pDateOfBirth || null,
+        nationality: pNationality || null,
+        languagesSpoken: [],
+        foot: (pFoot as "Left" | "Right" | "Both") || null,
         imageUrl: pImageUrl || "https://picsum.photos/seed/player-demo/400/500",
+        joinedDate: pJoinedDate || null,
+        previousClub: pPreviousClub || null,
+        bio: pBio || null,
+        favouriteSong: pFavouriteSong || null,
+        instagramUrl: pInstagramUrl || null,
+        facebookUrl: pFacebookUrl || null,
+        isActive: true,
+        userId: null,
       };
       setPlayers([...players, player]);
       setStatusMessage("Player added (demo mode).");
@@ -76,8 +109,20 @@ export function PlayersSection({
         name: pName,
         pos: pPos,
         secondPos: pSecondPos,
-        height: pHeight,
+        squadNumber: pSquadNumber ? parseInt(pSquadNumber) : null,
+        heightCm: pHeightCm ? parseInt(pHeightCm) : null,
+        weightKg: pWeightKg ? parseInt(pWeightKg) : null,
+        dateOfBirth: pDateOfBirth || null,
+        nationality: pNationality || null,
+        languagesSpoken: [],
+        foot: (pFoot as "Left" | "Right" | "Both") || null,
         imageUrl: pImageUrl,
+        joinedDate: pJoinedDate || null,
+        previousClub: pPreviousClub || null,
+        bio: pBio || null,
+        favouriteSong: pFavouriteSong || null,
+        instagramUrl: pInstagramUrl || null,
+        facebookUrl: pFacebookUrl || null,
       });
 
       if (error) {
@@ -122,8 +167,19 @@ export function PlayersSection({
     setPName("");
     setPPos("");
     setPSecondPos("");
-    setPHeight("");
+    setPSquadNumber("");
+    setPHeightCm("");
+    setPWeightKg("");
+    setPDateOfBirth("");
+    setPNationality("");
+    setPFoot("");
     setPImageUrl("");
+    setPJoinedDate("");
+    setPPreviousClub("");
+    setPBio("");
+    setPFavouriteSong("");
+    setPInstagramUrl("");
+    setPFacebookUrl("");
   }
 
   return (
@@ -134,7 +190,7 @@ export function PlayersSection({
         action={
           canCrud ? (
             <CrudDialog
-              contentClassName="sm:max-w-[500px]"
+              contentClassName="sm:max-w-[700px]"
               isSaving={isSaving}
               onOpenChange={setIsAddOpen}
               onSubmit={handleAdd}
@@ -143,30 +199,89 @@ export function PlayersSection({
               title="Add New Player"
               triggerLabel="Add Player"
             >
-              <div className="grid gap-4 py-4">
+              <div className="grid gap-4 py-4 max-h-[70vh] overflow-y-auto">
                 <div className="grid gap-2">
-                  <Label>Name</Label>
+                  <Label>Name *</Label>
                   <Input onChange={(e) => setPName(e.target.value)} value={pName} />
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="grid gap-2">
-                    <Label>Position</Label>
-                    <Input onChange={(e) => setPPos(e.target.value)} value={pPos} />
+                    <Label>Position *</Label>
+                    <Input onChange={(e) => setPPos(e.target.value)} placeholder="e.g. Center Back" value={pPos} />
                   </div>
                   <div className="grid gap-2">
                     <Label>Second Position</Label>
                     <Input onChange={(e) => setPSecondPos(e.target.value)} value={pSecondPos} />
                   </div>
+                  <div className="grid gap-2">
+                    <Label>Squad Number</Label>
+                    <Input onChange={(e) => setPSquadNumber(e.target.value)} type="number" value={pSquadNumber} />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                  <div className="grid gap-2">
+                    <Label>Height (cm)</Label>
+                    <Input onChange={(e) => setPHeightCm(e.target.value)} type="number" placeholder="182" value={pHeightCm} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Weight (kg)</Label>
+                    <Input onChange={(e) => setPWeightKg(e.target.value)} type="number" placeholder="76" value={pWeightKg} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Date of Birth</Label>
+                    <Input onChange={(e) => setPDateOfBirth(e.target.value)} type="date" value={pDateOfBirth} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Preferred Foot</Label>
+                    <Select value={pFoot} onValueChange={setPFoot}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Left">Left</SelectItem>
+                        <SelectItem value="Right">Right</SelectItem>
+                        <SelectItem value="Both">Both</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="grid gap-2">
-                    <Label>Height</Label>
-                    <Input onChange={(e) => setPHeight(e.target.value)} value={pHeight} />
+                    <Label>Nationality</Label>
+                    <Input onChange={(e) => setPNationality(e.target.value)} placeholder="e.g. Ghanaian" value={pNationality} />
                   </div>
                   <div className="grid gap-2">
-                    <Label>Image URL</Label>
-                    <Input onChange={(e) => setPImageUrl(e.target.value)} placeholder="https://..." value={pImageUrl} />
+                    <Label>Previous Club</Label>
+                    <Input onChange={(e) => setPPreviousClub(e.target.value)} value={pPreviousClub} />
                   </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label>Image URL</Label>
+                  <Input onChange={(e) => setPImageUrl(e.target.value)} placeholder="https://..." value={pImageUrl} />
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label>Joined Date</Label>
+                    <Input onChange={(e) => setPJoinedDate(e.target.value)} type="date" value={pJoinedDate} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Favourite Song</Label>
+                    <Input onChange={(e) => setPFavouriteSong(e.target.value)} placeholder="Walkout song" value={pFavouriteSong} />
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid gap-2">
+                    <Label>Instagram</Label>
+                    <Input onChange={(e) => setPInstagramUrl(e.target.value)} placeholder="https://instagram.com/..." value={pInstagramUrl} />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Facebook</Label>
+                    <Input onChange={(e) => setPFacebookUrl(e.target.value)} placeholder="https://facebook.com/..." value={pFacebookUrl} />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label>Bio</Label>
+                  <Textarea onChange={(e) => setPBio(e.target.value)} value={pBio} />
                 </div>
               </div>
             </CrudDialog>
@@ -183,7 +298,9 @@ export function PlayersSection({
                   <TableHead className="w-[60px]">Img</TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead className="hidden sm:table-cell">Position</TableHead>
-                  <TableHead className="hidden md:table-cell">Height</TableHead>
+                  <TableHead className="hidden md:table-cell">#</TableHead>
+                  <TableHead className="hidden lg:table-cell">Height</TableHead>
+                  <TableHead className="hidden lg:table-cell">Nationality</TableHead>
                   {canCrud && <TableHead className="text-right">Actions</TableHead>}
                 </TableRow>
               </TableHeader>
@@ -210,8 +327,14 @@ export function PlayersSection({
                     <TableCell className="hidden sm:table-cell">
                       <Badge variant="outline">{player.pos}</Badge>
                     </TableCell>
-                    <TableCell className="hidden text-sm text-muted-foreground md:table-cell">
-                      {player.height}
+                    <TableCell className="hidden md:table-cell text-sm text-muted-foreground">
+                      {player.squadNumber ?? "—"}
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
+                      {player.heightCm ? `${player.heightCm}cm` : "—"}
+                    </TableCell>
+                    <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">
+                      {player.nationality || "—"}
                     </TableCell>
                     {canCrud && (
                       <TableCell className="text-right">

@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Calendar,
+  Crown,
   Heart,
   LayoutDashboard,
   ShieldCheck,
@@ -15,7 +16,7 @@ type IconComponent = React.ComponentType<{ className?: string }>;
 
 // ── Role Types ──────────────────────────────────────────────────────────────
 
-export type UserRole = "admin" | "club" | "creator" | "player" | "fan";
+export type UserRole = "admin" | "club" | "creator" | "player" | "fan" | "owner" | "staff";
 
 export const ROLE_LABELS: Record<UserRole, string> = {
   admin: "Admin",
@@ -23,6 +24,8 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   creator: "Content Creator",
   player: "Player",
   fan: "Fan",
+  owner: "Owner",
+  staff: "Staff",
 };
 
 // ── Section IDs ─────────────────────────────────────────────────────────────
@@ -32,6 +35,7 @@ export type SectionId =
   | "fixtures"
   | "players"
   | "staff"
+  | "owners"
   | "partnerships"
   | "fixture-media"
   | "submissions"
@@ -78,6 +82,13 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     icon: ShieldCheck,
     roles: ["admin", "club", "fan"],
     crudRoles: ["admin", "club"],
+  },
+  {
+    id: "owners",
+    label: "Owners & Board",
+    icon: Crown,
+    roles: ["admin", "club", "owner", "fan"],
+    crudRoles: ["admin", "club", "owner"],
   },
   {
     id: "partnerships",

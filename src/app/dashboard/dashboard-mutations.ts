@@ -1,5 +1,6 @@
 export * from "./dashboard-mutations/fixture-media";
 export * from "./dashboard-mutations/fixtures";
+export * from "./dashboard-mutations/owners";
 export * from "./dashboard-mutations/partnerships";
 export * from "./dashboard-mutations/players";
 export * from "./dashboard-mutations/shared";

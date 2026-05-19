@@ -37,15 +37,30 @@ export default async function PlayersPage() {
                       {String(index + 1).padStart(2, "0")}
                     </span>
                   </div>
+                  {player.squadNumber && (
+                    <div className="absolute top-4 right-4 bg-primary/80 text-accent font-black text-2xl w-12 h-12 flex items-center justify-center rounded-full">
+                      {player.squadNumber}
+                    </div>
+                  )}
                 </div>
                 <CardHeader className="p-6">
                   <div className="mb-2 flex items-start justify-between gap-3">
                     <h3 className="min-w-0 break-words text-2xl font-bold">{player.name}</h3>
                     <Badge variant="secondary" className="shrink-0 bg-primary/40 text-accent">{player.pos}</Badge>
                   </div>
-                  <CardContent className="p-0 text-muted-foreground text-sm">
-                    {player.secondPos ? `${player.secondPos} option` : "First team squad member"}
-                    {player.height ? ` • ${player.height}` : ""}
+                  <CardContent className="p-0 text-muted-foreground text-sm space-y-1">
+                    <div className="flex flex-wrap gap-x-3 gap-y-1">
+                      {player.secondPos && <span>{player.secondPos} option</span>}
+                      {player.heightCm && <span>{player.heightCm}cm</span>}
+                      {player.weightKg && <span>{player.weightKg}kg</span>}
+                      {player.foot && <span>{player.foot} foot</span>}
+                    </div>
+                    {player.nationality && (
+                      <div className="text-xs mt-1">🇬🇭 {player.nationality}</div>
+                    )}
+                    {player.bio && (
+                      <p className="mt-2 text-xs leading-relaxed line-clamp-2">{player.bio}</p>
+                    )}
                   </CardContent>
                 </CardHeader>
               </Card>

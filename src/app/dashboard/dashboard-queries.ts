@@ -1,5 +1,6 @@
 import {
   mapFixtureRecord,
+  mapOwnerRecord,
   mapPlayerRecord,
   mapStaffRecord,
 } from "@/lib/team-site-data";
@@ -10,6 +11,7 @@ type FixtureRow = Database["public"]["Tables"]["fixtures"]["Row"];
 type GoalRow = Database["public"]["Tables"]["goals"]["Row"];
 type PlayerRow = Database["public"]["Tables"]["players"]["Row"];
 type StaffRow = Database["public"]["Tables"]["staff"]["Row"];
+type OwnerRow = Database["public"]["Tables"]["owners"]["Row"];
 export type PartnershipRow = Database["public"]["Tables"]["partnerships"]["Row"];
 export type FixtureMediaRow = Database["public"]["Tables"]["fixture_media"]["Row"];
 export type FanPurchaseRow = Database["public"]["Tables"]["fan_purchases"]["Row"];
@@ -21,16 +23,17 @@ const FIXTURE_SELECT =
   "id, opponent, fixture_date, fixture_time, venue, status, mariners_score, opponent_score, created_at, updated_at, goals(id, fixture_id, player_name, minute, team, created_at)";
 
 export async function fetchCoreDashboardData(supabase: SupabaseClient) {
-  const [fixturesRes, playersRes, staffRes] = await Promise.all([
+  const [fixturesRes, playersRes, staffRes, ownersRes] = await Promise.all([
     supabase
       .from("fixtures")
       .select(FIXTURE_SELECT)
       .order("fixture_date", { ascending: false }),
     supabase.from("players").select("*").eq("is_active", true).order("name"),
     supabase.from("staff").select("*").eq("is_active", true).order("name"),
+    supabase.from("owners").select("*").eq("is_active", true).order("name"),
   ]);
 
-  const firstError = fixturesRes.error ?? playersRes.error ?? staffRes.error;
+  const firstError = fixturesRes.error ?? playersRes.error ?? staffRes.error ?? ownersRes.error;
   if (firstError) {
     return { data: null, error: firstError };
   }
@@ -38,12 +41,14 @@ export async function fetchCoreDashboardData(supabase: SupabaseClient) {
   const fixtureRows = (fixturesRes.data ?? []) as FixtureWithGoals[];
   const playerRows = (playersRes.data ?? []) as PlayerRow[];
   const staffRows = (staffRes.data ?? []) as StaffRow[];
+  const ownerRows = (ownersRes.data ?? []) as OwnerRow[];
 
   return {
     data: {
       fixtures: fixtureRows.map((fixture) => mapFixtureRecord(fixture, fixture.goals ?? [])),
       players: playerRows.map(mapPlayerRecord),
       staff: staffRows.map(mapStaffRecord),
+      owners: ownerRows.map(mapOwnerRecord),
     },
     error: null,
   };

@@ -4,12 +4,15 @@ import {
   INITIAL_FIXTURES,
   INITIAL_PLAYERS,
   INITIAL_STAFF,
+  INITIAL_OWNERS,
   mapFixtureRecord,
   mapPlayerRecord,
   mapStaffRecord,
+  mapOwnerRecord,
   type Fixture,
   type Player,
   type StaffMember,
+  type Owner,
 } from "@/lib/team-site-data";
 import type { Database } from "@/types/database";
 
@@ -18,6 +21,7 @@ type GoalRow = Database["public"]["Tables"]["goals"]["Row"];
 type FixtureWithGoals = FixtureRow & { goals: GoalRow[] | null };
 type PlayerRow = Database["public"]["Tables"]["players"]["Row"];
 type StaffRow = Database["public"]["Tables"]["staff"]["Row"];
+type OwnerRow = Database["public"]["Tables"]["owners"]["Row"];
 export type SiteSettingsRow = Database["public"]["Tables"]["site_settings"]["Row"];
 
 export const DEFAULT_SITE_SETTINGS: SiteSettingsRow = {
@@ -105,6 +109,29 @@ export async function getStaff(): Promise<StaffMember[]> {
     return (data as StaffRow[]).map(mapStaffRecord);
   } catch {
     return INITIAL_STAFF;
+  }
+}
+
+export async function getOwners(): Promise<Owner[]> {
+  if (!hasSupabaseEnv()) {
+    return INITIAL_OWNERS;
+  }
+
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("owners")
+      .select("*")
+      .eq("is_active", true)
+      .order("name");
+
+    if (error || !data || data.length === 0) {
+      return INITIAL_OWNERS;
+    }
+
+    return (data as OwnerRow[]).map(mapOwnerRecord);
+  } catch {
+    return INITIAL_OWNERS;
   }
 }
 

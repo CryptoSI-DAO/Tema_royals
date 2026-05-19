@@ -40,7 +40,13 @@ export function MyProfileSection({
   const [name, setName] = useState(myPlayer?.name ?? "");
   const [pos, setPos] = useState(myPlayer?.pos ?? "");
   const [secondPos, setSecondPos] = useState(myPlayer?.secondPos ?? "");
-  const [height, setHeight] = useState(myPlayer?.height ?? "");
+  const [heightCm, setHeightCm] = useState(myPlayer?.heightCm?.toString() ?? "");
+  const [weightKg, setWeightKg] = useState(myPlayer?.weightKg?.toString() ?? "");
+  const [nationality, setNationality] = useState(myPlayer?.nationality ?? "");
+  const [bio, setBio] = useState(myPlayer?.bio ?? "");
+  const [favouriteSong, setFavouriteSong] = useState(myPlayer?.favouriteSong ?? "");
+  const [instagramUrl, setInstagramUrl] = useState(myPlayer?.instagramUrl ?? "");
+  const [facebookUrl, setFacebookUrl] = useState(myPlayer?.facebookUrl ?? "");
   const [imageUrl, setImageUrl] = useState(myPlayer?.imageUrl ?? "");
 
   async function handleSave() {
@@ -58,7 +64,13 @@ export function MyProfileSection({
                 name,
                 pos,
                 secondPos,
-                height,
+                heightCm: heightCm ? parseInt(heightCm) : null,
+                weightKg: weightKg ? parseInt(weightKg) : null,
+                nationality: nationality || null,
+                bio: bio || null,
+                favouriteSong: favouriteSong || null,
+                instagramUrl: instagramUrl || null,
+                facebookUrl: facebookUrl || null,
                 imageUrl,
               }
             : player
@@ -74,8 +86,20 @@ export function MyProfileSection({
         name,
         pos,
         secondPos,
-        height,
+        squadNumber: myPlayer.squadNumber,
+        heightCm: heightCm ? parseInt(heightCm) : null,
+        weightKg: weightKg ? parseInt(weightKg) : null,
+        dateOfBirth: myPlayer.dateOfBirth,
+        nationality: nationality || null,
+        languagesSpoken: myPlayer.languagesSpoken,
+        foot: myPlayer.foot,
         imageUrl,
+        joinedDate: myPlayer.joinedDate,
+        previousClub: myPlayer.previousClub,
+        bio: bio || null,
+        favouriteSong: favouriteSong || null,
+        instagramUrl: instagramUrl || null,
+        facebookUrl: facebookUrl || null,
       });
 
       if (error) {
@@ -133,7 +157,13 @@ export function MyProfileSection({
               {pos && <Badge variant="outline">{pos}</Badge>}
               {secondPos && <Badge variant="secondary">{secondPos}</Badge>}
             </div>
-            {height && <p className="mt-1 text-sm text-muted-foreground">{height}</p>}
+            {(heightCm || weightKg) && (
+              <p className="mt-1 text-sm text-muted-foreground">
+                {heightCm && `${heightCm}cm`}
+                {heightCm && weightKg && " / "}
+                {weightKg && `${weightKg}kg`}
+              </p>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -159,8 +189,32 @@ export function MyProfileSection({
             <Input onChange={(e) => setSecondPos(e.target.value)} value={secondPos} />
           </div>
           <div className="grid gap-2">
-            <Label>Height</Label>
-            <Input onChange={(e) => setHeight(e.target.value)} value={height} />
+            <Label>Height (cm)</Label>
+            <Input onChange={(e) => setHeightCm(e.target.value)} type="number" value={heightCm} />
+          </div>
+          <div className="grid gap-2">
+            <Label>Weight (kg)</Label>
+            <Input onChange={(e) => setWeightKg(e.target.value)} type="number" value={weightKg} />
+          </div>
+          <div className="grid gap-2">
+            <Label>Nationality</Label>
+            <Input onChange={(e) => setNationality(e.target.value)} value={nationality} />
+          </div>
+          <div className="grid gap-2">
+            <Label>Favourite Song</Label>
+            <Input onChange={(e) => setFavouriteSong(e.target.value)} value={favouriteSong} />
+          </div>
+          <div className="grid gap-2">
+            <Label>Instagram</Label>
+            <Input onChange={(e) => setInstagramUrl(e.target.value)} placeholder="https://instagram.com/..." value={instagramUrl} />
+          </div>
+          <div className="grid gap-2">
+            <Label>Facebook</Label>
+            <Input onChange={(e) => setFacebookUrl(e.target.value)} placeholder="https://facebook.com/..." value={facebookUrl} />
+          </div>
+          <div className="grid gap-2 sm:col-span-2">
+            <Label>Bio</Label>
+            <Input onChange={(e) => setBio(e.target.value)} value={bio} />
           </div>
           <div className="grid gap-2 sm:col-span-2">
             <Label>Image URL</Label>

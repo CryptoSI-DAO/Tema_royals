@@ -5,6 +5,7 @@ import { FixtureMediaSection } from "./fixture-media-section";
 import { FixturesSection } from "./fixtures-section";
 import { MyProfileSection } from "./my-profile-section";
 import { OverviewSection } from "./overview-section";
+import { OwnersSection } from "./owners-section";
 import { PartnershipsSection } from "./partnerships-section";
 import { PlayersSection } from "./players-section";
 import { StaffSection } from "./staff-section";
@@ -28,6 +29,7 @@ export function DashboardSections({
   fixtures,
   players,
   staff,
+  owners,
   partnerships,
   fixtureMedia,
   fanPurchases,
@@ -40,6 +42,7 @@ export function DashboardSections({
   setFixtures,
   setPlayers,
   setStaff,
+  setOwners,
   setPartnerships,
   setFixtureMedia,
   setSiteSettings,
@@ -102,6 +105,20 @@ export function DashboardSections({
           setStaff={setStaff}
           setStatusMessage={setStatusMessage}
           staff={staff}
+          supabaseRef={supabaseRef}
+        />
+      );
+    case "owners":
+      return (
+        <OwnersSection
+          canEdit={canCrud("owners")}
+          isSaving={isSaving}
+          mode={mode}
+          onRefresh={refresh}
+          owners={owners}
+          setIsSaving={setIsSaving}
+          setOwners={setOwners}
+          setStatusMessage={setStatusMessage}
           supabaseRef={supabaseRef}
         />
       );

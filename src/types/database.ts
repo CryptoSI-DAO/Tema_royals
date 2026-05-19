@@ -13,19 +13,19 @@ export type Database = {
         Row: {
           id: string;
           full_name: string | null;
-          role: "admin" | "club" | "creator" | "player" | "fan";
+          role: "admin" | "club" | "creator" | "player" | "fan" | "owner" | "staff";
           created_at: string;
         };
         Insert: {
           id: string;
           full_name?: string | null;
-          role?: "admin" | "club" | "creator" | "player" | "fan";
+          role?: "admin" | "club" | "creator" | "player" | "fan" | "owner" | "staff";
           created_at?: string;
         };
         Update: {
           id?: string;
           full_name?: string | null;
-          role?: "admin" | "club" | "creator" | "player" | "fan";
+          role?: "admin" | "club" | "creator" | "player" | "fan" | "owner" | "staff";
           created_at?: string;
         };
         Relationships: [];
@@ -155,9 +155,20 @@ export type Database = {
           name: string;
           pos: string;
           second_pos: string | null;
-          height: string | null;
-          image_url: string | null;
           squad_number: number | null;
+          height_cm: number | null;
+          weight_kg: number | null;
+          date_of_birth: string | null;
+          nationality: string | null;
+          languages_spoken: string[] | null;
+          foot: "Left" | "Right" | "Both" | null;
+          image_url: string | null;
+          joined_date: string | null;
+          previous_club: string | null;
+          bio: string | null;
+          favourite_song: string | null;
+          instagram_url: string | null;
+          facebook_url: string | null;
           is_active: boolean;
           user_id: string | null;
           created_at: string;
@@ -168,9 +179,20 @@ export type Database = {
           name: string;
           pos: string;
           second_pos?: string | null;
-          height?: string | null;
-          image_url?: string | null;
           squad_number?: number | null;
+          height_cm?: number | null;
+          weight_kg?: number | null;
+          date_of_birth?: string | null;
+          nationality?: string | null;
+          languages_spoken?: string[] | null;
+          foot?: "Left" | "Right" | "Both" | null;
+          image_url?: string | null;
+          joined_date?: string | null;
+          previous_club?: string | null;
+          bio?: string | null;
+          favourite_song?: string | null;
+          instagram_url?: string | null;
+          facebook_url?: string | null;
           is_active?: boolean;
           user_id?: string | null;
           created_at?: string;
@@ -181,9 +203,20 @@ export type Database = {
           name?: string;
           pos?: string;
           second_pos?: string | null;
-          height?: string | null;
-          image_url?: string | null;
           squad_number?: number | null;
+          height_cm?: number | null;
+          weight_kg?: number | null;
+          date_of_birth?: string | null;
+          nationality?: string | null;
+          languages_spoken?: string[] | null;
+          foot?: "Left" | "Right" | "Both" | null;
+          image_url?: string | null;
+          joined_date?: string | null;
+          previous_club?: string | null;
+          bio?: string | null;
+          favourite_song?: string | null;
+          instagram_url?: string | null;
+          facebook_url?: string | null;
           is_active?: boolean;
           user_id?: string | null;
           created_at?: string;
@@ -204,9 +237,16 @@ export type Database = {
           id: string;
           name: string;
           role: string;
+          department: string | null;
           bio: string | null;
           image_url: string | null;
+          email: string | null;
+          phone: string | null;
+          nationality: string | null;
+          languages_spoken: string[] | null;
+          joined_date: string | null;
           is_active: boolean;
+          user_id: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -214,9 +254,16 @@ export type Database = {
           id?: string;
           name: string;
           role: string;
+          department?: string | null;
           bio?: string | null;
           image_url?: string | null;
+          email?: string | null;
+          phone?: string | null;
+          nationality?: string | null;
+          languages_spoken?: string[] | null;
+          joined_date?: string | null;
           is_active?: boolean;
+          user_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -224,13 +271,93 @@ export type Database = {
           id?: string;
           name?: string;
           role?: string;
+          department?: string | null;
           bio?: string | null;
           image_url?: string | null;
+          email?: string | null;
+          phone?: string | null;
+          nationality?: string | null;
+          languages_spoken?: string[] | null;
+          joined_date?: string | null;
           is_active?: boolean;
+          user_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "staff_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "auth.users";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      owners: {
+        Row: {
+          id: string;
+          name: string;
+          title: string;
+          bio: string | null;
+          image_url: string | null;
+          email: string | null;
+          phone: string | null;
+          ownership_stake: string | null;
+          joined_date: string | null;
+          website_url: string | null;
+          linkedin_url: string | null;
+          instagram_url: string | null;
+          is_active: boolean;
+          user_id: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          title: string;
+          bio?: string | null;
+          image_url?: string | null;
+          email?: string | null;
+          phone?: string | null;
+          ownership_stake?: string | null;
+          joined_date?: string | null;
+          website_url?: string | null;
+          linkedin_url?: string | null;
+          instagram_url?: string | null;
+          is_active?: boolean;
+          user_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          title?: string;
+          bio?: string | null;
+          image_url?: string | null;
+          email?: string | null;
+          phone?: string | null;
+          ownership_stake?: string | null;
+          joined_date?: string | null;
+          website_url?: string | null;
+          linkedin_url?: string | null;
+          instagram_url?: string | null;
+          is_active?: boolean;
+          user_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "owners_user_id_fkey";
+            columns: ["user_id"];
+            isOneToOne: false;
+            referencedRelation: "auth.users";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       partnerships: {
         Row: {
