@@ -487,14 +487,18 @@ export type Database = {
       player_submissions: {
         Row: {
           id: string;
+          submission_type: "player" | "staff";
           name: string;
           email: string | null;
           phone: string | null;
-          pos: string;
+          pos: string | null;
           second_pos: string | null;
           height: string | null;
           image_url: string | null;
           squad_number: number | null;
+          staff_role: string | null;
+          department: string | null;
+          bio: string | null;
           proposed_password: string | null;
           status: "pending" | "approved" | "rejected";
           submitted_at: string;
@@ -502,18 +506,23 @@ export type Database = {
           reviewed_by: string | null;
           reviewer_notes: string | null;
           created_player_id: string | null;
+          created_staff_id: string | null;
           created_user_id: string | null;
         };
         Insert: {
           id?: string;
+          submission_type?: "player" | "staff";
           name: string;
           email?: string | null;
           phone?: string | null;
-          pos: string;
+          pos?: string | null;
           second_pos?: string | null;
           height?: string | null;
           image_url?: string | null;
           squad_number?: number | null;
+          staff_role?: string | null;
+          department?: string | null;
+          bio?: string | null;
           proposed_password: string;
           status?: "pending" | "approved" | "rejected";
           submitted_at?: string;
@@ -521,18 +530,23 @@ export type Database = {
           reviewed_by?: string | null;
           reviewer_notes?: string | null;
           created_player_id?: string | null;
+          created_staff_id?: string | null;
           created_user_id?: string | null;
         };
         Update: {
           id?: string;
+          submission_type?: "player" | "staff";
           name?: string;
           email?: string | null;
           phone?: string | null;
-          pos?: string;
+          pos?: string | null;
           second_pos?: string | null;
           height?: string | null;
           image_url?: string | null;
           squad_number?: number | null;
+          staff_role?: string | null;
+          department?: string | null;
+          bio?: string | null;
           proposed_password?: string | null;
           status?: "pending" | "approved" | "rejected";
           submitted_at?: string;
@@ -540,6 +554,7 @@ export type Database = {
           reviewed_by?: string | null;
           reviewer_notes?: string | null;
           created_player_id?: string | null;
+          created_staff_id?: string | null;
           created_user_id?: string | null;
         };
         Relationships: [
@@ -555,6 +570,13 @@ export type Database = {
             columns: ["created_player_id"];
             isOneToOne: false;
             referencedRelation: "players";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "player_submissions_created_staff_id_fkey";
+            columns: ["created_staff_id"];
+            isOneToOne: false;
+            referencedRelation: "staff";
             referencedColumns: ["id"];
           },
           {

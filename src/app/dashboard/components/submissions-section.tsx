@@ -16,6 +16,8 @@ import {
   Copy,
   Save,
   Settings,
+  User,
+  Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -112,11 +114,15 @@ export function SubmissionsSection({
 
   // Edit dialog state
   const [editId, setEditId] = useState<string | null>(null);
+  const [editType, setEditType] = useState<"player" | "staff">("player");
   const [editName, setEditName] = useState("");
   const [editPos, setEditPos] = useState("");
   const [editSecondPos, setEditSecondPos] = useState("");
   const [editHeight, setEditHeight] = useState("");
   const [editSquadNumber, setEditSquadNumber] = useState("");
+  const [editStaffRole, setEditStaffRole] = useState("");
+  const [editDepartment, setEditDepartment] = useState("");
+  const [editBio, setEditBio] = useState("");
   const [editPassword, setEditPassword] = useState("");
   const [editDialogOpen, setEditDialogOpen] = useState(false);
 
@@ -162,11 +168,15 @@ export function SubmissionsSection({
   // ── Edit handler ────────────────────────────────────────────────────────
   const openEdit = (s: Submission) => {
     setEditId(s.id);
+    setEditType(s.submission_type || "player");
     setEditName(s.name);
-    setEditPos(s.pos);
+    setEditPos(s.pos ?? "");
     setEditSecondPos(s.second_pos ?? "");
     setEditHeight(s.height ?? "");
     setEditSquadNumber(s.squad_number?.toString() ?? "");
+    setEditStaffRole(s.staff_role ?? "");
+    setEditDepartment(s.department ?? "");
+    setEditBio(s.bio ?? "");
     setEditPassword(s.proposed_password ?? "");
     setEditDialogOpen(true);
   };
@@ -183,10 +193,18 @@ export function SubmissionsSection({
 
     const update: SubmissionUpdate = {
       name: editName,
-      pos: editPos,
-      second_pos: editSecondPos || null,
-      height: editHeight || null,
-      squad_number: editSquadNumber ? parseInt(editSquadNumber, 10) : null,
+      ...(editType === "player"
+        ? {
+            pos: editPos || null,
+            second_pos: editSecondPos || null,
+            height: editHeight || null,
+            squad_number: editSquadNumber ? parseInt(editSquadNumber, 10) : null,
+          }
+        : {
+            staff_role: editStaffRole || null,
+            department: editDepartment || null,
+            bio: editBio || null,
+          }),
     };
 
     // Only include password if it was changed and is valid
@@ -244,8 +262,11 @@ export function SubmissionsSection({
         return;
       }
 
+      const isStaffSubmission = submissions.find(s => s.id === submissionId)?.submission_type === "staff";
       setStatusMessage(
-        `Approved! Player account created for ${result.player?.name || "player"}.`
+        isStaffSubmission
+          ? `Approved! Staff account created for ${result.staff?.name || "staff member"}.`
+          : `Approved! Player account created for ${result.player?.name || "player"}.`
       );
       fetchSubmissions();
     } catch (err) {
@@ -305,11 +326,15 @@ export function SubmissionsSection({
   // ── Reset edit state when dialog closes ────────────────────────────────
   const resetEditState = useCallback(() => {
     setEditId(null);
+    setEditType("player");
     setEditName("");
     setEditPos("");
     setEditSecondPos("");
     setEditHeight("");
     setEditSquadNumber("");
+    setEditStaffRole("");
+    setEditDepartment("");
+    setEditBio("");
     setEditPassword("");
   }, []);
 
@@ -353,11 +378,29 @@ export function SubmissionsSection({
           <div className="flex-1 min-w-0">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <h3 className="font-bold truncate">{s.name}</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-bold truncate">{s.name}</h3>
+                  <Badge variant="outline" className="shrink-0 text-[10px] px-1.5 py-0">
+                    {s.submission_type === "staff" ? (
+                      <><Users className="mr-0.5 h-2.5 w-2.5" />Staff</>
+                    ) : (
+                      <><User className="mr-0.5 h-2.5 w-2.5" />Player</>
+                    )}
+                  </Badge>
+                </div>
                 <p className="text-xs text-muted-foreground">
-                  {s.pos}{s.second_pos ? ` / ${s.second_pos}` : ""}
-                  {s.height ? ` · ${s.height}` : ""}
-                  {s.squad_number ? ` · #${s.squad_number}` : ""}
+                  {s.submission_type === "staff" ? (
+                    <>
+                      {s.staff_role || "Staff"}
+                      {s.department ? ` · ${s.department}` : ""}
+                    </>
+                  ) : (
+                    <>
+                      {s.pos}{s.second_pos ? ` / ${s.second_pos}` : ""}
+                      {s.height ? ` · ${s.height}` : ""}
+                      {s.squad_number ? ` · #${s.squad_number}` : ""}
+                    </>
+                  )}
                 </p>
               </div>
               <Badge
@@ -447,7 +490,7 @@ export function SubmissionsSection({
   if (mode === "mock") {
     return (
       <div className="space-y-8">
-        <h2 className="text-2xl font-black uppercase sm:text-3xl">Player Submissions</h2>
+        <h2 className="text-2xl font-black uppercase sm:text-3xl">Registrations</h2>
         <Card className="border-accent/10 bg-card/50">
           <CardContent className="py-12 text-center text-muted-foreground">
             Player submissions require a live Supabase connection.
@@ -461,9 +504,9 @@ export function SubmissionsSection({
     <div className="space-y-6">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-2xl font-black uppercase sm:text-3xl">Player Submissions</h2>
+          <h2 className="text-2xl font-black uppercase sm:text-3xl">Registrations</h2>
           <p className="text-xs text-muted-foreground sm:text-sm">
-            Review and approve player registration requests
+            Review and approve player & staff registration requests
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -524,7 +567,7 @@ export function SubmissionsSection({
           ) : pending.length === 0 ? (
             <Card className="border-accent/10 bg-card/50">
               <CardContent className="py-12 text-center text-muted-foreground">
-                No pending submissions. Players can register at /register when registration is open.
+                No pending submissions. Players and staff can register at /register when registration is open.
               </CardContent>
             </Card>
           ) : (
@@ -605,7 +648,7 @@ export function SubmissionsSection({
               </CardHeader>
               <CardContent className="grid gap-4">
                 <p className="text-xs text-muted-foreground">
-                  Share this URL with prospective players so they can submit their details.
+                  Share this URL with prospective players and staff so they can submit their details.
                 </p>
                 <div className="flex items-center gap-2">
                   <Input
@@ -634,7 +677,7 @@ export function SubmissionsSection({
               </CardHeader>
               <CardContent className="grid gap-4">
                 <p className="text-xs text-muted-foreground">
-                  Players must enter this password to access the registration form. Share it in-person with prospective players. Leave empty to remove the password requirement.
+                  Users must enter this keyword to access the registration form. Share it in-person with prospective players and staff. Leave empty to remove the keyword requirement.
                 </p>
                 <div className="relative">
                   <Input
@@ -683,47 +726,66 @@ export function SubmissionsSection({
               <Label>Name</Label>
               <Input value={editName} onChange={(e) => setEditName(e.target.value)} />
             </div>
-            <div className="grid gap-2">
-              <Label>Position</Label>
-              <Select value={editPos} onValueChange={setEditPos}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {POSITIONS.map((p) => (
-                    <SelectItem key={p} value={p}>{p}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label>Second Position</Label>
-              <Select value={editSecondPos} onValueChange={setEditSecondPos}>
-                <SelectTrigger>
-                  <SelectValue placeholder="None" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="_none">None</SelectItem>
-                  {POSITIONS.map((p) => (
-                    <SelectItem key={p} value={p}>{p}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="grid gap-2">
-              <Label>Height</Label>
-              <Input value={editHeight} onChange={(e) => setEditHeight(e.target.value)} />
-            </div>
-            <div className="grid gap-2">
-              <Label>Squad Number</Label>
-              <Input
-                type="number"
-                min={1}
-                max={99}
-                value={editSquadNumber}
-                onChange={(e) => setEditSquadNumber(e.target.value)}
-              />
-            </div>
+            {editType === "player" ? (
+              <>
+                <div className="grid gap-2">
+                  <Label>Position</Label>
+                  <Select value={editPos} onValueChange={setEditPos}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {POSITIONS.map((p) => (
+                        <SelectItem key={p} value={p}>{p}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label>Second Position</Label>
+                  <Select value={editSecondPos} onValueChange={setEditSecondPos}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="None" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="_none">None</SelectItem>
+                      {POSITIONS.map((p) => (
+                        <SelectItem key={p} value={p}>{p}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label>Height</Label>
+                  <Input value={editHeight} onChange={(e) => setEditHeight(e.target.value)} />
+                </div>
+                <div className="grid gap-2">
+                  <Label>Squad Number</Label>
+                  <Input
+                    type="number"
+                    min={1}
+                    max={99}
+                    value={editSquadNumber}
+                    onChange={(e) => setEditSquadNumber(e.target.value)}
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="grid gap-2">
+                  <Label>Staff Role</Label>
+                  <Input value={editStaffRole} onChange={(e) => setEditStaffRole(e.target.value)} />
+                </div>
+                <div className="grid gap-2">
+                  <Label>Department</Label>
+                  <Input value={editDepartment} onChange={(e) => setEditDepartment(e.target.value)} />
+                </div>
+                <div className="grid gap-2">
+                  <Label>Bio</Label>
+                  <Input value={editBio} onChange={(e) => setEditBio(e.target.value)} />
+                </div>
+              </>
+            )}
             <div className="grid gap-2">
               <Label>Password {editPassword ? "" : "(not set)"}</Label>
               <Input
@@ -795,12 +857,20 @@ export function SubmissionsSection({
                 <p><span className="font-medium">Phone:</span> {viewSubmission.phone || "—"}</p>
               </div>
 
-              {/* Playing Details */}
-              <div className="grid gap-1 text-sm">
-                <p><span className="font-medium">Position:</span> {viewSubmission.pos}{viewSubmission.second_pos ? ` / ${viewSubmission.second_pos}` : ""}</p>
-                <p><span className="font-medium">Height:</span> {viewSubmission.height || "—"}</p>
-                <p><span className="font-medium">Squad Number:</span> {viewSubmission.squad_number ?? "—"}</p>
-              </div>
+              {/* Type-specific Details */}
+              {viewSubmission.submission_type === "staff" ? (
+                <div className="grid gap-1 text-sm">
+                  <p><span className="font-medium">Staff Role:</span> {viewSubmission.staff_role || "—"}</p>
+                  <p><span className="font-medium">Department:</span> {viewSubmission.department || "—"}</p>
+                  {viewSubmission.bio && <p><span className="font-medium">Bio:</span> {viewSubmission.bio}</p>}
+                </div>
+              ) : (
+                <div className="grid gap-1 text-sm">
+                  <p><span className="font-medium">Position:</span> {viewSubmission.pos}{viewSubmission.second_pos ? ` / ${viewSubmission.second_pos}` : ""}</p>
+                  <p><span className="font-medium">Height:</span> {viewSubmission.height || "—"}</p>
+                  <p><span className="font-medium">Squad Number:</span> {viewSubmission.squad_number ?? "—"}</p>
+                </div>
+              )}
 
               {/* Password */}
               <div className="grid gap-1 text-sm">
@@ -841,10 +911,13 @@ export function SubmissionsSection({
               )}
 
               {/* Linked records (approved) */}
-              {(viewSubmission.created_player_id || viewSubmission.created_user_id) && (
+              {(viewSubmission.created_player_id || viewSubmission.created_staff_id || viewSubmission.created_user_id) && (
                 <div className="grid gap-1 text-xs text-muted-foreground">
                   {viewSubmission.created_player_id && (
                     <p>Player ID: {viewSubmission.created_player_id}</p>
+                  )}
+                  {viewSubmission.created_staff_id && (
+                    <p>Staff ID: {viewSubmission.created_staff_id}</p>
                   )}
                   {viewSubmission.created_user_id && (
                     <p>User ID: {viewSubmission.created_user_id}</p>

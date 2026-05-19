@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { z } from "zod";
 import type { Database } from "@/types/database";
 
-const EditedFieldsSchema = z.object({
+const PlayerEditedFieldsSchema = z.object({
   name: z.string().min(1).optional(),
   pos: z.string().min(1).optional(),
   second_pos: z.string().nullable().optional(),
@@ -13,9 +13,17 @@ const EditedFieldsSchema = z.object({
   image_url: z.string().url().nullable().optional(),
 });
 
+const StaffEditedFieldsSchema = z.object({
+  name: z.string().min(1).optional(),
+  staff_role: z.string().min(1).optional(),
+  department: z.string().nullable().optional(),
+  bio: z.string().nullable().optional(),
+  image_url: z.string().url().nullable().optional(),
+});
+
 const ApproveRequestSchema = z.object({
   submission_id: z.string().uuid("submission_id must be a valid UUID."),
-  edited_fields: EditedFieldsSchema.optional(),
+  edited_fields: z.union([PlayerEditedFieldsSchema, StaffEditedFieldsSchema]).optional(),
 });
 
 export async function POST(request: Request) {
@@ -149,12 +157,17 @@ export async function POST(request: Request) {
       );
     }
 
-    // ── 5. Update profile role to player ─────────────────────────────────────
+    // ── 5. Determine submission type and create the appropriate record ────────
+    const isStaff = submission.submission_type === "staff";
+    const targetRole = isStaff ? "staff" : "player";
+    const resolvedName = editedFields?.name || submission.name;
+
+    // Update profile role
     const { error: profileError } = await adminClient
       .from("profiles")
       .update({
-        role: "player",
-        full_name: editedFields?.name || submission.name,
+        role: targetRole,
+        full_name: resolvedName,
       })
       .eq("id", newUser.user.id);
 
@@ -163,72 +176,145 @@ export async function POST(request: Request) {
       // Continue — profile exists with role=fan, can be updated later
     }
 
-    // ── 6. Create player row ─────────────────────────────────────────────────
-    const rawHeight = editedFields?.height ?? submission.height;
-    const parsedHeightCm = rawHeight ? parseInt(rawHeight, 10) : null;
+    if (isStaff) {
+      // ── 5a. Create staff row ──────────────────────────────────────────────
+      const staffEdited = editedFields as z.infer<typeof StaffEditedFieldsSchema> | undefined;
 
-    const { data: newPlayer, error: playerError } = await adminClient
-      .from("players")
-      .insert({
-        name: editedFields?.name || submission.name,
-        pos: editedFields?.pos || submission.pos,
-        second_pos: editedFields?.second_pos ?? submission.second_pos,
-        height_cm: isNaN(parsedHeightCm as number) ? null : parsedHeightCm,
-        image_url: editedFields?.image_url ?? submission.image_url,
-        squad_number: editedFields?.squad_number ?? submission.squad_number,
-        user_id: newUser.user.id,
-        is_active: true,
-      })
-      .select("id")
-      .single();
+      const { data: newStaff, error: staffError } = await adminClient
+        .from("staff")
+        .insert({
+          name: resolvedName,
+          role: staffEdited?.staff_role || submission.staff_role || "Staff",
+          department: staffEdited?.department ?? submission.department ?? null,
+          bio: staffEdited?.bio ?? submission.bio ?? null,
+          image_url: staffEdited?.image_url ?? submission.image_url,
+          email: submission.email,
+          phone: submission.phone,
+          user_id: newUser.user.id,
+          is_active: true,
+        })
+        .select("id")
+        .single();
 
-    if (playerError || !newPlayer) {
-      console.error("Player creation error:", playerError);
-      // Clean up the orphaned auth user so the submission can be retried
-      await adminClient.auth.admin.deleteUser(newUser.user.id);
+      if (staffError || !newStaff) {
+        console.error("Staff creation error:", staffError);
+        await adminClient.auth.admin.deleteUser(newUser.user.id);
+        return Response.json(
+          { error: `Staff creation failed — user rolled back: ${staffError?.message}` },
+          { status: 500 }
+        );
+      }
+
+      // Update submission status
+      const { error: updateError } = await adminClient
+        .from("player_submissions")
+        .update({
+          status: "approved",
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: session.user.id,
+          created_staff_id: newStaff.id,
+          created_user_id: newUser.user.id,
+          proposed_password: null,
+          ...(staffEdited?.name && { name: staffEdited.name }),
+          ...(staffEdited?.staff_role && { staff_role: staffEdited.staff_role }),
+          ...(staffEdited?.department !== undefined && { department: staffEdited.department }),
+          ...(staffEdited?.bio !== undefined && { bio: staffEdited.bio }),
+          ...(staffEdited?.image_url !== undefined && { image_url: staffEdited.image_url }),
+        })
+        .eq("id", submissionId);
+
+      if (updateError) {
+        console.error("Submission update error:", updateError);
+      }
+
       return Response.json(
-        { error: `Player creation failed — user rolled back: ${playerError?.message}` },
-        { status: 500 }
+        {
+          success: true,
+          staff: {
+            id: newStaff.id,
+            name: resolvedName,
+            user_id: newUser.user.id,
+          },
+          identifier: userEmail || userPhone,
+        },
+        { status: 200 }
+      );
+    } else {
+      // ── 5b. Create player row ──────────────────────────────────────────────
+      const playerEdited = editedFields as z.infer<typeof PlayerEditedFieldsSchema> | undefined;
+      const playerPos = playerEdited?.pos || submission.pos;
+
+      if (!playerPos) {
+        await adminClient.auth.admin.deleteUser(newUser.user.id);
+        return Response.json(
+          { error: "Player submission has no position specified." },
+          { status: 400 }
+        );
+      }
+
+      const rawHeight = playerEdited?.height ?? submission.height;
+      const parsedHeightCm = rawHeight ? parseInt(rawHeight, 10) : null;
+
+      const { data: newPlayer, error: playerError } = await adminClient
+        .from("players")
+        .insert({
+          name: resolvedName,
+          pos: playerPos,
+          second_pos: playerEdited?.second_pos ?? submission.second_pos,
+          height_cm: isNaN(parsedHeightCm as number) ? null : parsedHeightCm,
+          image_url: playerEdited?.image_url ?? submission.image_url,
+          squad_number: playerEdited?.squad_number ?? submission.squad_number,
+          user_id: newUser.user.id,
+          is_active: true,
+        })
+        .select("id")
+        .single();
+
+      if (playerError || !newPlayer) {
+        console.error("Player creation error:", playerError);
+        await adminClient.auth.admin.deleteUser(newUser.user.id);
+        return Response.json(
+          { error: `Player creation failed — user rolled back: ${playerError?.message}` },
+          { status: 500 }
+        );
+      }
+
+      // Update submission status
+      const { error: updateError } = await adminClient
+        .from("player_submissions")
+        .update({
+          status: "approved",
+          reviewed_at: new Date().toISOString(),
+          reviewed_by: session.user.id,
+          created_player_id: newPlayer.id,
+          created_user_id: newUser.user.id,
+          proposed_password: null,
+          ...(playerEdited?.name && { name: playerEdited.name }),
+          ...(playerEdited?.pos && { pos: playerEdited.pos }),
+          ...(playerEdited?.second_pos !== undefined && { second_pos: playerEdited.second_pos }),
+          ...(playerEdited?.height !== undefined && { height: playerEdited.height }),
+          ...(playerEdited?.squad_number !== undefined && { squad_number: playerEdited.squad_number }),
+          ...(playerEdited?.image_url !== undefined && { image_url: playerEdited.image_url }),
+        })
+        .eq("id", submissionId);
+
+      if (updateError) {
+        console.error("Submission update error:", updateError);
+      }
+
+      return Response.json(
+        {
+          success: true,
+          player: {
+            id: newPlayer.id,
+            name: resolvedName,
+            user_id: newUser.user.id,
+          },
+          identifier: userEmail || userPhone,
+        },
+        { status: 200 }
       );
     }
-
-    // ── 7. Update submission status ──────────────────────────────────────────
-    const { error: updateError } = await adminClient
-      .from("player_submissions")
-      .update({
-        status: "approved",
-        reviewed_at: new Date().toISOString(),
-        reviewed_by: session.user.id,
-        created_player_id: newPlayer.id,
-        created_user_id: newUser.user.id,
-        proposed_password: null, // Clear the password
-        // Apply any edited fields
-        ...(editedFields?.name && { name: editedFields.name }),
-        ...(editedFields?.pos && { pos: editedFields.pos }),
-        ...(editedFields?.second_pos !== undefined && { second_pos: editedFields.second_pos }),
-        ...(editedFields?.height !== undefined && { height: editedFields.height }),
-        ...(editedFields?.squad_number !== undefined && { squad_number: editedFields.squad_number }),
-        ...(editedFields?.image_url !== undefined && { image_url: editedFields.image_url }),
-      })
-      .eq("id", submissionId);
-
-    if (updateError) {
-      console.error("Submission update error:", updateError);
-      // User and player are already created — this is a non-critical failure
-    }
-
-    return Response.json(
-      {
-        success: true,
-        player: {
-          id: newPlayer.id,
-          name: editedFields?.name || submission.name,
-          user_id: newUser.user.id,
-        },
-        identifier: userEmail || userPhone,
-      },
-      { status: 200 }
-    );
   } catch (err) {
     console.error("approve-submission API error:", err);
     return Response.json(

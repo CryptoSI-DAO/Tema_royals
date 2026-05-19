@@ -2,12 +2,13 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { Lock, Upload, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Lock, Upload, CheckCircle, AlertCircle, Loader2, Users, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { createClient } from "@/lib/supabase/client";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 import type { Database } from "@/types/database";
@@ -20,7 +21,23 @@ const POSITIONS = [
   "LW", "RW", "CF", "ST",
 ];
 
-type Step = "loading" | "closed" | "gate" | "form" | "success" | "error";
+const STAFF_ROLES = [
+  "Head Coach",
+  "Assistant Coach",
+  "Goalkeeping Coach",
+  "Fitness Coach",
+  "Physiotherapist",
+  "Team Manager",
+  "General Manager",
+  "Scout",
+  "Analyst",
+  "Medical Officer",
+  "Equipment Manager",
+  "Other",
+];
+
+type Step = "loading" | "closed" | "gate" | "role" | "form" | "success" | "error";
+type RegistrationRole = "player" | "staff";
 
 export default function RegisterPage() {
   const [step, setStep] = useState<Step>("loading");
@@ -31,19 +48,29 @@ export default function RegisterPage() {
   const [gatePassword, setGatePassword] = useState("");
   const [gateError, setGateError] = useState("");
 
-  // Form state
+  // Role selection
+  const [registrationRole, setRegistrationRole] = useState<RegistrationRole>("player");
+
+  // Common form state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [pos, setPos] = useState("");
-  const [secondPos, setSecondPos] = useState("");
-  const [height, setHeight] = useState("");
-  const [squadNumber, setSquadNumber] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Player-specific state
+  const [pos, setPos] = useState("");
+  const [secondPos, setSecondPos] = useState("");
+  const [height, setHeight] = useState("");
+  const [squadNumber, setSquadNumber] = useState("");
+
+  // Staff-specific state
+  const [staffRole, setStaffRole] = useState("");
+  const [department, setDepartment] = useState("");
+  const [bio, setBio] = useState("");
 
   // Fetch site settings on mount
   useEffect(() => {
@@ -74,7 +101,7 @@ export default function RegisterPage() {
           setStep("closed");
         } else if (!data.registration_password) {
           // No gate password required
-          setStep("form");
+          setStep("role");
         } else {
           setStep("gate");
         }
@@ -92,14 +119,14 @@ export default function RegisterPage() {
     (e: React.FormEvent) => {
       e.preventDefault();
       if (!settings?.registration_password) {
-        setStep("form");
+        setStep("role");
         return;
       }
       if (gatePassword === settings.registration_password) {
         setGateError("");
-        setStep("form");
+        setStep("role");
       } else {
-        setGateError("Incorrect password. Please check with the club staff.");
+        setGateError("Incorrect keyword. Please check with the club staff.");
       }
     },
     [gatePassword, settings]
@@ -126,13 +153,9 @@ export default function RegisterPage() {
     e.preventDefault();
     setErrorMessage(null);
 
-    // Validation
+    // Common validation
     if (!name.trim()) {
       setErrorMessage("Name is required.");
-      return;
-    }
-    if (!pos) {
-      setErrorMessage("Primary position is required.");
       return;
     }
     if (!email.trim() && !phone.trim()) {
@@ -149,6 +172,16 @@ export default function RegisterPage() {
     }
     if (password !== confirmPassword) {
       setErrorMessage("Passwords do not match.");
+      return;
+    }
+
+    // Role-specific validation
+    if (registrationRole === "player" && !pos) {
+      setErrorMessage("Primary position is required for players.");
+      return;
+    }
+    if (registrationRole === "staff" && !staffRole) {
+      setErrorMessage("Staff role is required.");
       return;
     }
 
@@ -180,21 +213,37 @@ export default function RegisterPage() {
         imageUrl = urlData.publicUrl;
       }
 
+      // Build submission payload
+      const basePayload = {
+        name: name.trim(),
+        email: email.trim() || null,
+        phone: phone.trim() || null,
+        image_url: imageUrl,
+        proposed_password: password,
+        status: "pending" as const,
+        submission_type: registrationRole as "player" | "staff",
+      };
+
+      const payload = registrationRole === "player"
+        ? {
+            ...basePayload,
+            pos,
+            second_pos: secondPos.trim() || null,
+            height: height.trim() || null,
+            squad_number: squadNumber ? parseInt(squadNumber, 10) : null,
+          }
+        : {
+            ...basePayload,
+            pos: null,
+            staff_role: staffRole,
+            department: department.trim() || null,
+            bio: bio.trim() || null,
+          };
+
       // Insert submission
       const { error: insertError } = await supabase
         .from("player_submissions")
-        .insert({
-          name: name.trim(),
-          email: email.trim() || null,
-          phone: phone.trim() || null,
-          pos,
-          second_pos: secondPos.trim() || null,
-          height: height.trim() || null,
-          squad_number: squadNumber ? parseInt(squadNumber, 10) : null,
-          image_url: imageUrl,
-          proposed_password: password,
-          status: "pending",
-        });
+        .insert(payload);
 
       if (insertError) {
         setErrorMessage(`Submission failed: ${insertError.message}`);
@@ -219,7 +268,7 @@ export default function RegisterPage() {
         {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-black uppercase tracking-tight">
-            Player Registration
+            Join Tema Royals
           </h1>
           <p className="text-muted-foreground text-sm">
             Submit your details to join the team
@@ -243,34 +292,34 @@ export default function RegisterPage() {
               <div>
                 <h2 className="text-xl font-bold">Registration Closed</h2>
                 <p className="text-muted-foreground text-sm mt-2">
-                  {errorMessage || "Player registration is not currently open. Please check back later or contact the club."}
+                  {errorMessage || "Registration is not currently open. Please check back later or contact the club."}
                 </p>
               </div>
             </CardContent>
           </Card>
         )}
 
-        {/* Gate Password */}
+        {/* Gate Password / Keyword */}
         {step === "gate" && (
           <Card className="border-accent/10 bg-card/50">
             <CardHeader>
               <CardTitle className="text-sm font-black uppercase tracking-widest text-accent text-center">
-                Enter Password
+                Enter Keyword
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground text-center mb-4">
-                Enter the password provided by the club to access the registration form.
+                Enter the keyword provided by the club to access the registration form.
               </p>
               <form onSubmit={handleGateSubmit} className="space-y-4">
                 <div className="grid gap-2">
                   <Label htmlFor="gate-password" className="sr-only">
-                    Password
+                    Keyword
                   </Label>
                   <Input
                     id="gate-password"
                     type="password"
-                    placeholder="Enter registration password..."
+                    placeholder="Enter registration keyword..."
                     value={gatePassword}
                     onChange={(e) => setGatePassword(e.target.value)}
                     autoFocus
@@ -291,9 +340,59 @@ export default function RegisterPage() {
           </Card>
         )}
 
+        {/* Role Selection */}
+        {step === "role" && (
+          <div className="space-y-4">
+            <Card
+              className="border-accent/10 bg-card/50 cursor-pointer hover:border-accent/40 transition-colors"
+              onClick={() => { setRegistrationRole("player"); setStep("form"); }}
+            >
+              <CardContent className="py-8 text-center space-y-3">
+                <User className="h-10 w-10 mx-auto text-accent" />
+                <h3 className="text-xl font-bold uppercase">Player</h3>
+                <p className="text-muted-foreground text-sm">
+                  Register as a player — enter your position, squad number, and playing details.
+                </p>
+                <Button variant="outline" className="mt-2 font-bold">
+                  Register as Player
+                </Button>
+              </CardContent>
+            </Card>
+            <Card
+              className="border-accent/10 bg-card/50 cursor-pointer hover:border-accent/40 transition-colors"
+              onClick={() => { setRegistrationRole("staff"); setStep("form"); }}
+            >
+              <CardContent className="py-8 text-center space-y-3">
+                <Users className="h-10 w-10 mx-auto text-accent" />
+                <h3 className="text-xl font-bold uppercase">Staff</h3>
+                <p className="text-muted-foreground text-sm">
+                  Register as staff — coaching, medical, management, or operations.
+                </p>
+                <Button variant="outline" className="mt-2 font-bold">
+                  Register as Staff
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
         {/* Registration Form */}
         {step === "form" && (
           <form onSubmit={handleFormSubmit} className="space-y-4">
+            {/* Role badge at top */}
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black uppercase tracking-widest text-accent">
+                {registrationRole === "player" ? "Player Registration" : "Staff Registration"}
+              </span>
+              <button
+                type="button"
+                className="text-xs text-muted-foreground hover:text-accent underline"
+                onClick={() => setStep("role")}
+              >
+                Change role
+              </button>
+            </div>
+
             {/* Personal Details */}
             <Card className="border-accent/10 bg-card/50">
               <CardHeader>
@@ -338,67 +437,116 @@ export default function RegisterPage() {
               </CardContent>
             </Card>
 
-            {/* Playing Details */}
-            <Card className="border-accent/10 bg-card/50">
-              <CardHeader>
-                <CardTitle className="text-sm font-black uppercase tracking-widest text-accent">
-                  Playing Details
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="grid gap-4 sm:grid-cols-2">
-                <div className="grid gap-2">
-                  <Label>Primary Position *</Label>
-                  <Select value={pos} onValueChange={setPos}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select position" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {POSITIONS.map((p) => (
-                        <SelectItem key={p} value={p}>
-                          {p}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label>Second Position</Label>
-                  <Select value={secondPos} onValueChange={setSecondPos}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Optional" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {POSITIONS.map((p) => (
-                        <SelectItem key={p} value={p}>
-                          {p}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="height">Height</Label>
-                  <Input
-                    id="height"
-                    placeholder={"e.g. 5'10\""}
-                    value={height}
-                    onChange={(e) => setHeight(e.target.value)}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="squad-number">Squad Number</Label>
-                  <Input
-                    id="squad-number"
-                    type="number"
-                    min={1}
-                    max={99}
-                    placeholder="Preferred number"
-                    value={squadNumber}
-                    onChange={(e) => setSquadNumber(e.target.value)}
-                  />
-                </div>
-              </CardContent>
-            </Card>
+            {/* Player-Specific Fields */}
+            {registrationRole === "player" && (
+              <Card className="border-accent/10 bg-card/50">
+                <CardHeader>
+                  <CardTitle className="text-sm font-black uppercase tracking-widest text-accent">
+                    Playing Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid gap-2">
+                    <Label>Primary Position *</Label>
+                    <Select value={pos} onValueChange={setPos}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select position" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {POSITIONS.map((p) => (
+                          <SelectItem key={p} value={p}>
+                            {p}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label>Second Position</Label>
+                    <Select value={secondPos} onValueChange={setSecondPos}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Optional" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {POSITIONS.map((p) => (
+                          <SelectItem key={p} value={p}>
+                            {p}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="height">Height</Label>
+                    <Input
+                      id="height"
+                      placeholder={"e.g. 5'10\""}
+                      value={height}
+                      onChange={(e) => setHeight(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="squad-number">Squad Number</Label>
+                    <Input
+                      id="squad-number"
+                      type="number"
+                      min={1}
+                      max={99}
+                      placeholder="Preferred number"
+                      value={squadNumber}
+                      onChange={(e) => setSquadNumber(e.target.value)}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Staff-Specific Fields */}
+            {registrationRole === "staff" && (
+              <Card className="border-accent/10 bg-card/50">
+                <CardHeader>
+                  <CardTitle className="text-sm font-black uppercase tracking-widest text-accent">
+                    Staff Details
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="grid gap-4">
+                  <div className="grid gap-2">
+                    <Label>Role *</Label>
+                    <Select value={staffRole} onValueChange={setStaffRole}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your role" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {STAFF_ROLES.map((r) => (
+                          <SelectItem key={r} value={r}>
+                            {r}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="department">Department</Label>
+                    <Input
+                      id="department"
+                      placeholder="e.g. Coaching, Medical, Operations"
+                      value={department}
+                      onChange={(e) => setDepartment(e.target.value)}
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="bio">About You</Label>
+                    <Textarea
+                      id="bio"
+                      placeholder="Brief description of your experience and qualifications..."
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      rows={3}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {/* Profile Picture */}
             <Card className="border-accent/10 bg-card/50">
@@ -453,7 +601,7 @@ export default function RegisterPage() {
               </CardHeader>
               <CardContent className="grid gap-4">
                 <p className="text-xs text-muted-foreground">
-                  Choose a password for your future player account. Once approved, you'll use this to log in.
+                  Choose a password for your account. Once approved, you'll use this to log in.
                 </p>
                 <div className="grid gap-2">
                   <Label htmlFor="password">Password *</Label>
@@ -520,7 +668,7 @@ export default function RegisterPage() {
               <div>
                 <h2 className="text-xl font-bold">Registration Submitted!</h2>
                 <p className="text-muted-foreground text-sm mt-2">
-                  Thank you, {name}! Your details have been submitted and are pending review.
+                  Thank you, {name}! Your {registrationRole} details have been submitted and are pending review.
                   The club will approve your account and you'll be able to log in after that.
                 </p>
               </div>
