@@ -15,6 +15,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploadField } from "@/components/image-upload-field";
+import { uploadImage } from "@/lib/upload-image";
 import type { StaffMember } from "@/lib/team-site-data";
 import type { SupabaseClient, DashboardMode } from "../types";
 import { createStaff, deleteStaff, getMutationErrorMessage } from "../dashboard-mutations";
@@ -48,7 +50,7 @@ export function StaffSection({
   const [sRole, setSRole] = useState("");
   const [sDepartment, setSDepartment] = useState("");
   const [sBio, setSBio] = useState("");
-  const [sImageUrl, setSImageUrl] = useState("");
+  const [sImageFile, setSImageFile] = useState<File | null>(null);
   const [sEmail, setSEmail] = useState("");
   const [sPhone, setSPhone] = useState("");
   const [sNationality, setSNationality] = useState("");
@@ -67,7 +69,7 @@ export function StaffSection({
         role: sRole,
         department: sDepartment || null,
         bio: sBio || null,
-        imageUrl: sImageUrl || "https://picsum.photos/seed/staff-demo/400/500",
+        imageUrl: "https://picsum.photos/seed/staff-demo/400/500",
         email: sEmail || null,
         phone: sPhone || null,
         nationality: sNationality || null,
@@ -84,12 +86,24 @@ export function StaffSection({
 
     setIsSaving(true);
     try {
+      // Upload image to storage if a file was selected
+      let imageUrl = "";
+      if (sImageFile && supabaseRef.current) {
+        const result = await uploadImage(supabaseRef.current, sImageFile, "staff");
+        if (result.error) {
+          setStatusMessage(`Image upload failed: ${result.error}`);
+          setIsSaving(false);
+          return;
+        }
+        imageUrl = result.url || "";
+      }
+
       const { error } = await createStaff(supabaseRef.current, {
         name: sName,
         role: sRole,
         department: sDepartment || null,
         bio: sBio || null,
-        imageUrl: sImageUrl,
+        imageUrl,
         email: sEmail || null,
         phone: sPhone || null,
         nationality: sNationality || null,
@@ -140,7 +154,7 @@ export function StaffSection({
     setSRole("");
     setSDepartment("");
     setSBio("");
-    setSImageUrl("");
+    setSImageFile(null);
     setSEmail("");
     setSPhone("");
     setSNationality("");
@@ -199,10 +213,11 @@ export function StaffSection({
                     <Input onChange={(e) => setSJoinedDate(e.target.value)} type="date" value={sJoinedDate} />
                   </div>
                 </div>
-                <div className="grid gap-2">
-                  <Label>Image URL</Label>
-                  <Input onChange={(e) => setSImageUrl(e.target.value)} placeholder="https://..." value={sImageUrl} />
-                </div>
+                <ImageUploadField
+                  currentUrl={null}
+                  onFileSelected={setSImageFile}
+                  label="Staff Photo"
+                />
                 <div className="grid gap-2">
                   <Label>Bio</Label>
                   <Textarea onChange={(e) => setSBio(e.target.value)} value={sBio} />

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Database } from "@/types/database";
+import { uploadImage } from "@/lib/upload-image";
 import type { SupabaseClient, DashboardMode } from "../types";
 import {
   createPartnership,
@@ -38,7 +39,7 @@ export function PartnershipsSection({
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [logoUrl, setLogoUrl] = useState("");
+  const [logoFile, setLogoFile] = useState<File | null>(null);
   const [websiteUrl, setWebsiteUrl] = useState("");
   const [tier, setTier] = useState<string>("bronze");
 
@@ -56,7 +57,7 @@ export function PartnershipsSection({
           id: createDemoId("partner"),
           name,
           description: description || null,
-          logo_url: logoUrl || null,
+          logo_url: null,
           website_url: websiteUrl || null,
           tier: tier as PartnershipRow["tier"],
           is_active: true,
@@ -71,6 +72,18 @@ export function PartnershipsSection({
 
     setIsSaving(true);
     try {
+      // Upload logo to storage if a file was selected
+      let logoUrl = "";
+      if (logoFile && supabaseRef.current) {
+        const result = await uploadImage(supabaseRef.current, logoFile, "partners");
+        if (result.error) {
+          setStatusMessage(`Logo upload failed: ${result.error}`);
+          setIsSaving(false);
+          return;
+        }
+        logoUrl = result.url || "";
+      }
+
       const { data, error } = await createPartnership(supabaseRef.current, {
         name,
         description,
@@ -149,7 +162,7 @@ export function PartnershipsSection({
     setIsAddOpen(false);
     setName("");
     setDescription("");
-    setLogoUrl("");
+    setLogoFile(null);
     setWebsiteUrl("");
     setTier("bronze");
   }
@@ -164,10 +177,9 @@ export function PartnershipsSection({
             <PartnershipDialog
               description={description}
               isSaving={isSaving}
-              logoUrl={logoUrl}
               name={name}
               onDescriptionChange={setDescription}
-              onLogoUrlChange={setLogoUrl}
+              onLogoFileSelected={setLogoFile}
               onNameChange={setName}
               onOpenChange={setIsAddOpen}
               onSubmit={handleAdd}

@@ -145,5 +145,9 @@ If creating assets in phases, do this first:
 
 - To replace homepage and merch placeholders, update `src/lib/placeholder-images.json`.
 - To replace seeded player and staff placeholders, update `src/lib/team-site-data.ts` or the corresponding Supabase records.
-- If Supabase Storage is used, store media in a public bucket and save the public URL in the relevant `image_url` field.
+- **Player, staff, owner, and partner images** are uploaded via the dashboard to the `team-images` Supabase Storage bucket. The upload helper is in `src/lib/upload-image.ts` and the reusable UI component is `src/components/image-upload-field.tsx`.
+- The `image_url` / `logo_url` database columns store the Supabase Storage public URL after upload.
+- The `team-images` bucket is public (anyone can read), but only admin and club roles can upload, update, or delete files (enforced via RLS policies on `storage.objects`).
+- File constraints: 5 MB max, JPEG/PNG/WebP only.
+- Bucket folder structure: `players/`, `staff/`, `owners/`, `partners/` — each file gets a UUID-based filename.
 - Keep the blue/white crest colors consistent across all edited images so the site feels like one club.

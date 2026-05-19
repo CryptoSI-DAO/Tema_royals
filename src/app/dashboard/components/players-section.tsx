@@ -22,6 +22,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploadField } from "@/components/image-upload-field";
+import { uploadImage } from "@/lib/upload-image";
 import type { Player } from "@/lib/team-site-data";
 import type { SupabaseClient, DashboardMode } from "../types";
 import { createPlayer, deletePlayer, getMutationErrorMessage } from "../dashboard-mutations";
@@ -60,7 +62,7 @@ export function PlayersSection({
   const [pDateOfBirth, setPDateOfBirth] = useState("");
   const [pNationality, setPNationality] = useState("");
   const [pFoot, setPFoot] = useState<string>("");
-  const [pImageUrl, setPImageUrl] = useState("");
+  const [pImageFile, setPImageFile] = useState<File | null>(null);
   const [pJoinedDate, setPJoinedDate] = useState("");
   const [pPreviousClub, setPPreviousClub] = useState("");
   const [pBio, setPBio] = useState("");
@@ -87,7 +89,7 @@ export function PlayersSection({
         nationality: pNationality || null,
         languagesSpoken: [],
         foot: (pFoot as "Left" | "Right" | "Both") || null,
-        imageUrl: pImageUrl || "https://picsum.photos/seed/player-demo/400/500",
+        imageUrl: "https://picsum.photos/seed/player-demo/400/500",
         joinedDate: pJoinedDate || null,
         previousClub: pPreviousClub || null,
         bio: pBio || null,
@@ -105,6 +107,18 @@ export function PlayersSection({
 
     setIsSaving(true);
     try {
+      // Upload image to storage if a file was selected
+      let imageUrl = "";
+      if (pImageFile && supabaseRef.current) {
+        const result = await uploadImage(supabaseRef.current, pImageFile, "players");
+        if (result.error) {
+          setStatusMessage(`Image upload failed: ${result.error}`);
+          setIsSaving(false);
+          return;
+        }
+        imageUrl = result.url || "";
+      }
+
       const { error } = await createPlayer(supabaseRef.current, {
         name: pName,
         pos: pPos,
@@ -116,7 +130,7 @@ export function PlayersSection({
         nationality: pNationality || null,
         languagesSpoken: [],
         foot: (pFoot as "Left" | "Right" | "Both") || null,
-        imageUrl: pImageUrl,
+        imageUrl,
         joinedDate: pJoinedDate || null,
         previousClub: pPreviousClub || null,
         bio: pBio || null,
@@ -173,7 +187,7 @@ export function PlayersSection({
     setPDateOfBirth("");
     setPNationality("");
     setPFoot("");
-    setPImageUrl("");
+    setPImageFile(null);
     setPJoinedDate("");
     setPPreviousClub("");
     setPBio("");
@@ -255,10 +269,11 @@ export function PlayersSection({
                     <Input onChange={(e) => setPPreviousClub(e.target.value)} value={pPreviousClub} />
                   </div>
                 </div>
-                <div className="grid gap-2">
-                  <Label>Image URL</Label>
-                  <Input onChange={(e) => setPImageUrl(e.target.value)} placeholder="https://..." value={pImageUrl} />
-                </div>
+                <ImageUploadField
+                  currentUrl={null}
+                  onFileSelected={setPImageFile}
+                  label="Player Photo"
+                />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="grid gap-2">
                     <Label>Joined Date</Label>

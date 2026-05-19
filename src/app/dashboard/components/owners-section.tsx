@@ -22,6 +22,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploadField } from "@/components/image-upload-field";
+import { uploadImage } from "@/lib/upload-image";
 import type { Owner } from "@/lib/team-site-data";
 import type { SupabaseClient, DashboardMode } from "../types";
 import { createOwner, deleteOwner, getMutationErrorMessage } from "../dashboard-mutations";
@@ -54,7 +56,7 @@ export function OwnersSection({
   const [oName, setOName] = useState("");
   const [oTitle, setOTitle] = useState("");
   const [oBio, setOBio] = useState("");
-  const [oImageUrl, setOImageUrl] = useState("");
+  const [oImageFile, setOImageFile] = useState<File | null>(null);
   const [oEmail, setOEmail] = useState("");
   const [oPhone, setOPhone] = useState("");
   const [oStake, setOStake] = useState("");
@@ -75,7 +77,7 @@ export function OwnersSection({
         name: oName,
         title: oTitle,
         bio: oBio || null,
-        imageUrl: oImageUrl || "https://picsum.photos/seed/owner-demo/400/500",
+        imageUrl: "https://picsum.photos/seed/owner-demo/400/500",
         email: oEmail || null,
         phone: oPhone || null,
         ownershipStake: oStake || null,
@@ -94,11 +96,23 @@ export function OwnersSection({
 
     setIsSaving(true);
     try {
+      // Upload image to storage if a file was selected
+      let imageUrl = "";
+      if (oImageFile && supabaseRef.current) {
+        const result = await uploadImage(supabaseRef.current, oImageFile, "owners");
+        if (result.error) {
+          setStatusMessage(`Image upload failed: ${result.error}`);
+          setIsSaving(false);
+          return;
+        }
+        imageUrl = result.url || "";
+      }
+
       const { error } = await createOwner(supabaseRef.current, {
         name: oName,
         title: oTitle,
         bio: oBio || null,
-        imageUrl: oImageUrl,
+        imageUrl,
         email: oEmail || null,
         phone: oPhone || null,
         ownershipStake: oStake || null,
@@ -150,7 +164,7 @@ export function OwnersSection({
     setOName("");
     setOTitle("");
     setOBio("");
-    setOImageUrl("");
+    setOImageFile(null);
     setOEmail("");
     setOPhone("");
     setOStake("");
@@ -202,10 +216,11 @@ export function OwnersSection({
                     <Input onChange={(e) => setOPhone(e.target.value)} value={oPhone} />
                   </div>
                 </div>
-                <div className="grid gap-2">
-                  <Label>Image URL</Label>
-                  <Input onChange={(e) => setOImageUrl(e.target.value)} placeholder="https://..." value={oImageUrl} />
-                </div>
+                <ImageUploadField
+                  currentUrl={null}
+                  onFileSelected={setOImageFile}
+                  label="Owner Photo"
+                />
                 <div className="grid gap-2">
                   <Label>Joined Date</Label>
                   <Input onChange={(e) => setOJoinedDate(e.target.value)} type="date" value={oJoinedDate} />

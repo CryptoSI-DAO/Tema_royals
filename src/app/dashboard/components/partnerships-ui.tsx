@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploadField } from "@/components/image-upload-field";
 import {
   Table,
   TableBody,
@@ -32,13 +33,12 @@ type PartnershipDialogProps = {
   isSaving: boolean;
   name: string;
   description: string;
-  logoUrl: string;
   websiteUrl: string;
   tier: string;
   onOpenChange: (open: boolean) => void;
   onNameChange: (value: string) => void;
   onDescriptionChange: (value: string) => void;
-  onLogoUrlChange: (value: string) => void;
+  onLogoFileSelected: (file: File | null) => void;
   onWebsiteUrlChange: (value: string) => void;
   onTierChange: (value: string) => void;
   onSubmit: () => void;
@@ -49,13 +49,12 @@ export function PartnershipDialog({
   isSaving,
   name,
   description,
-  logoUrl,
   websiteUrl,
   tier,
   onOpenChange,
   onNameChange,
   onDescriptionChange,
-  onLogoUrlChange,
+  onLogoFileSelected,
   onWebsiteUrlChange,
   onTierChange,
   onSubmit,
@@ -79,19 +78,18 @@ export function PartnershipDialog({
           <Label>Description</Label>
           <Textarea onChange={(event) => onDescriptionChange(event.target.value)} value={description} />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="grid gap-2">
-            <Label>Logo URL</Label>
-            <Input onChange={(event) => onLogoUrlChange(event.target.value)} placeholder="https://..." value={logoUrl} />
-          </div>
-          <div className="grid gap-2">
-            <Label>Website URL</Label>
-            <Input
-              onChange={(event) => onWebsiteUrlChange(event.target.value)}
-              placeholder="https://..."
-              value={websiteUrl}
-            />
-          </div>
+        <ImageUploadField
+          currentUrl={null}
+          onFileSelected={onLogoFileSelected}
+          label="Partner Logo"
+        />
+        <div className="grid gap-2">
+          <Label>Website URL</Label>
+          <Input
+            onChange={(event) => onWebsiteUrlChange(event.target.value)}
+            placeholder="https://..."
+            value={websiteUrl}
+          />
         </div>
         <div className="grid gap-2">
           <Label>Tier</Label>
