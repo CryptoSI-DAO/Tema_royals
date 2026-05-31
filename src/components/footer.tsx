@@ -1,6 +1,7 @@
 "use client";
 
 import { FooterContent } from "@/components/footer-content";
+import type { Locale } from "@/i18n/config";
 import type { SiteSettingsRow } from "@/lib/team-data-loaders";
 
 const DEFAULT_FOOTER_SETTINGS: SiteSettingsRow = {
@@ -18,6 +19,12 @@ const DEFAULT_FOOTER_SETTINGS: SiteSettingsRow = {
   updated_at: new Date(0).toISOString(),
 };
 
-export function Footer({ settings = DEFAULT_FOOTER_SETTINGS }: { settings?: SiteSettingsRow }) {
-  return <FooterContent settings={settings} />;
+export function Footer({
+  settings = DEFAULT_FOOTER_SETTINGS,
+  locale,
+}: {
+  settings?: SiteSettingsRow;
+  locale?: Locale;
+}) {
+  return <FooterContent settings={settings} locale={locale} />;
 }
