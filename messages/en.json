@@ -148,7 +148,18 @@
   },
   "contactPage": {
     "title": "CONTACT US",
-    "intro": "Have a question about tickets, merch, or trials? We're here to help the {clubName} family.",
+    "intro": "Ready to prove you belong with {clubName}? Contact us about trials, player opportunities, tickets, merch, or general club enquiries.",
+    "trialsBadge": "Player trials",
+    "trialsTitle": "Think you are good enough for the Royals?",
+    "trialsCopy": "{clubName} is always interested in disciplined, committed players who believe they can compete for a place. Send us your details by email and our team will review suitable trial enquiries.",
+    "emailTrials": "Email about trials",
+    "whatToSend": "What to send",
+    "trialRequirements": [
+      "Full name, age, nationality, and current location.",
+      "Primary position, secondary position, preferred foot, height, and playing experience.",
+      "Recent match clips, player profile, or links to football videos if available.",
+      "Your phone number and the best time for the club to contact you."
+    ],
     "sendMessage": "SEND A MESSAGE",
     "name": "Name",
     "email": "Email",

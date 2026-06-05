@@ -14,6 +14,7 @@ import { hasSupabaseEnv } from "@/lib/supabase/env";
 import type { Database } from "@/types/database";
 
 type SiteSettings = Database["public"]["Tables"]["site_settings"]["Row"];
+type PlayerSubmissionInsert = Database["public"]["Tables"]["player_submissions"]["Insert"];
 
 const POSITIONS = [
   "GK", "CB", "LB", "RB", "LWB", "RWB",
@@ -224,7 +225,7 @@ export default function RegisterPage() {
         submission_type: registrationRole as "player" | "staff",
       };
 
-      const payload = registrationRole === "player"
+      const payload: PlayerSubmissionInsert = registrationRole === "player"
         ? {
             ...basePayload,
             pos,

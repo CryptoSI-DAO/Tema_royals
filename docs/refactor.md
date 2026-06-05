@@ -87,16 +87,16 @@ Remaining:
 
 Status: complete.
 
-- Stop importing Genkit server flow internals directly into client components.
+- Stop importing AI server flow internals directly into client components.
 - Add a server action or API route for match summary generation.
 - Let the client component call that boundary and show clear error feedback.
-- Address the Genkit/OpenTelemetry build warning if it remains after the boundary is cleaned up.
+- Keep AI provider dependencies isolated from the public client bundle.
 
 Progress:
 
-- Added `src/app/api/match-summary/route.ts` as the server boundary for Genkit summary generation.
+- Added `src/app/api/match-summary/route.ts` as the server boundary for Gemini summary generation.
 - Updated `src/components/ai-match-insight.tsx` to call the API route and show user-facing error feedback.
-- Added `@opentelemetry/exporter-jaeger` so the Genkit/OpenTelemetry build import resolves cleanly.
+- Replaced the Genkit wrapper with a direct Gemini REST call to remove the vulnerable OpenTelemetry dependency tree.
 
 ## 7. Improve Validation And Error Handling
 

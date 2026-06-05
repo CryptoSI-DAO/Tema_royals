@@ -31,7 +31,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -40,7 +39,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createClient } from "@/lib/supabase/client";
 import type { Database } from "@/types/database";
 import type { SupabaseClient, DashboardMode } from "../types";
 
@@ -342,15 +340,11 @@ export function SubmissionsSection({
   const SubmissionCard = memo(function SubmissionCard({
     s,
     processingId,
-    onEdit,
-    onApprove,
     onReject,
     onView,
   }: {
     s: Submission;
     processingId: string | null;
-    onEdit: (s: Submission) => void;
-    onApprove: (id: string) => void;
     onReject: (id: string) => void;
     onView: (s: Submission) => void;
   }) {
@@ -576,8 +570,6 @@ export function SubmissionsSection({
                 key={s.id}
                 s={s}
                 processingId={processingId}
-                onEdit={openEdit}
-                onApprove={handleApprove}
                 onReject={(id) => { setRejectId(id); setRejectDialogOpen(true); }}
                 onView={openView}
               />
@@ -602,8 +594,6 @@ export function SubmissionsSection({
                 key={s.id}
                 s={s}
                 processingId={processingId}
-                onEdit={openEdit}
-                onApprove={handleApprove}
                 onReject={(id) => { setRejectId(id); setRejectDialogOpen(true); }}
                 onView={openView}
               />
@@ -628,8 +618,6 @@ export function SubmissionsSection({
                 key={s.id}
                 s={s}
                 processingId={processingId}
-                onEdit={openEdit}
-                onApprove={handleApprove}
                 onReject={(id) => { setRejectId(id); setRejectDialogOpen(true); }}
                 onView={openView}
               />

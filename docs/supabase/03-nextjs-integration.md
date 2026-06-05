@@ -168,12 +168,11 @@ Do not expose it to the browser.
 
 ## 9. AI Features Still Need Google
 
-This template already uses Genkit in:
-- `src/ai/genkit.ts`
+This template uses a Gemini-backed match insight flow in:
 - `src/ai/flows/automated-match-summaries.ts`
 
 Supabase handles data and auth.
-Genkit still needs:
+The AI route still needs:
 
 ```bash
 GOOGLE_API_KEY=

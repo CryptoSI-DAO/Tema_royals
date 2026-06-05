@@ -33,7 +33,7 @@ What it does not have yet is a production database and auth layer. These docs sh
 - Public visitors can read published content.
 - Club admins sign in and manage content through `/admin`.
 - Supabase Storage holds team images such as player headshots, staff photos, sponsor logos, and optional hero media.
-- AI features still use the existing Genkit setup, so `GOOGLE_API_KEY` remains part of the environment.
+- AI features call Gemini directly, so `GOOGLE_API_KEY` remains part of the environment.
 
 ## Recommended Environment Variables
 

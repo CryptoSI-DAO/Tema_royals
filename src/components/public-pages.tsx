@@ -340,6 +340,8 @@ export async function ContactPageContent({ locale = defaultLocale }: PublicPageP
   const contactEmail = settings.contact_email || "contact@temaroyalssc.com";
   const contactPhone = settings.contact_phone || "+233 (0) 30 000 0000";
   const stadiumName = settings.stadium_name || "Tema Sports Stadium";
+  const trialMailto = `mailto:${contactEmail}?subject=${encodeURIComponent("Tema Royals trial enquiry")}`;
+  const trialRequirements = tArray(locale, "contactPage.trialRequirements");
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -347,6 +349,39 @@ export async function ContactPageContent({ locale = defaultLocale }: PublicPageP
       <main className="flex-1 py-16">
         <div className="container mx-auto px-4">
           <PageIntro title={t("contactPage.title")} copy={t("contactPage.intro", { clubName })} />
+          <section className="mb-12 overflow-hidden rounded-lg border border-accent/20 bg-primary/15">
+            <div className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.1fr_0.9fr] lg:p-10">
+              <div>
+                <Badge className="mb-4 bg-accent text-accent-foreground">{t("contactPage.trialsBadge")}</Badge>
+                <h2 className="text-3xl font-black uppercase tracking-tight sm:text-5xl">{t("contactPage.trialsTitle")}</h2>
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">{t("contactPage.trialsCopy", { clubName })}</p>
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                  <Link href={trialMailto}>
+                    <Button size="lg" className="w-full bg-accent font-bold text-accent-foreground sm:w-auto">
+                      <Mail className="mr-2 h-4 w-4 rtl:ml-2 rtl:mr-0" />
+                      {t("contactPage.emailTrials")}
+                    </Button>
+                  </Link>
+                  <Link href={`mailto:${contactEmail}`}>
+                    <Button size="lg" variant="outline" className="w-full border-accent text-accent sm:w-auto">
+                      {contactEmail}
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+              <div className="rounded-lg border border-accent/20 bg-background/70 p-6">
+                <h3 className="mb-4 text-lg font-black uppercase">{t("contactPage.whatToSend")}</h3>
+                <ul className="space-y-3">
+                  {trialRequirements.map((requirement) => (
+                    <li key={requirement} className="flex gap-3 text-sm leading-6 text-muted-foreground">
+                      <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                      <span>{requirement}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
           <div className="grid gap-12 lg:grid-cols-2">
             <Card className="border-primary/20 bg-card p-4 sm:p-6">
               <CardHeader className="px-0 pt-0"><CardTitle>{t("contactPage.sendMessage")}</CardTitle></CardHeader>
@@ -388,8 +423,9 @@ function Field({ label, placeholder, type = "text" }: { label: string; placehold
   return <div className="space-y-2"><label className="text-sm font-medium">{label}</label><Input type={type} placeholder={placeholder} className="bg-background" /></div>;
 }
 
-function tArray(locale: Locale, key: "ticketsPage.generalPerks" | "ticketsPage.premiumPerks" | "ticketsPage.familyPerks") {
+function tArray(locale: Locale, key: "ticketsPage.generalPerks" | "ticketsPage.premiumPerks" | "ticketsPage.familyPerks" | "contactPage.trialRequirements") {
   const messages = getMessages(locale) as unknown as Record<string, { [key: string]: string[] }>;
+  const fallback = getMessages(defaultLocale) as unknown as Record<string, { [key: string]: string[] }>;
   const [namespace, name] = key.split(".");
-  return messages[namespace]?.[name] ?? [];
+  return messages[namespace]?.[name] ?? fallback[namespace]?.[name] ?? [];
 }

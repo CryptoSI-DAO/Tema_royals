@@ -12,7 +12,7 @@ The project is no longer just a generic football template. It already has concre
 - Admin dashboard for managing fixtures, results, players, and staff
 - Supabase client/server/middleware helpers
 - Seeded local data so the site still works before Supabase is configured
-- Genkit-based AI match insight flow in `src/ai/flows/automated-match-summaries.ts`
+- Gemini-powered AI match insight flow in `src/ai/flows/automated-match-summaries.ts`
 
 ## Tech Stack
 
@@ -23,7 +23,7 @@ The project is no longer just a generic football template. It already has concre
 - shadcn/ui
 - Lucide React
 - Supabase
-- Genkit with Google GenAI
+- Gemini REST API
 
 ## Current Routes
 
@@ -94,7 +94,7 @@ npm run start
 npm run typecheck
 ```
 
-`npm run typecheck` currently performs a production Next build first, then runs `tsc --noEmit`.
+`npm run typecheck` runs `tsc --noEmit`.
 
 ## Project Structure
 
@@ -102,7 +102,7 @@ npm run typecheck
 src/app                App Router pages
 src/components         Shared UI, navbar, footer, and shadcn components
 src/lib                Seed data, utilities, and Supabase helpers
-src/ai                 Genkit setup and AI flows
+src/ai                 Gemini-backed AI summary flow
 src/types              Shared TypeScript types, including database types
 docs/supabase          Setup notes, schema SQL, and rollout docs
 middleware.ts          Next middleware entrypoint
